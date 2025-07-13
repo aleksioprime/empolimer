@@ -3,15 +3,11 @@ name: Deploy to Server
 run-name: "Deploy to Server for ${{ github.ref_name }} by ${{ github.actor }}"
 
 on:
-  workflow_run:
-    workflows: ["Deploy to Docker Hub"]
-    types:
-      - completed
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
     - name: Checkout repository
@@ -36,13 +32,13 @@ jobs:
           echo "${{ secrets.ENV_VARS }}" > ~/empolimer/.env
           echo "Файл .env загружен на сервер"
 
-          curl -o ~/empolimer/docker-compose.prod.yaml https://raw.githubusercontent.com/aleksioprime/sk-empolimer/main/web/docker-compose.prod.yaml
+          curl -o ~/empolimer/docker-compose.prod.yaml https://raw.githubusercontent.com/aleksioprime/empolimer/main/web/docker-compose.prod.yaml
 
           # Если nginx/nginx.conf НЕ существует, скачиваем его
           if [ ! -f ~/empolimer/nginx/nginx.conf ]; then
             echo "Файл nginx/nginx.conf не найден. Скачиваем..."
             mkdir -p ~/empolimer/nginx
-            curl -v -o ~/empolimer/nginx/nginx.conf https://raw.githubusercontent.com/aleksioprime/sk-empolimer/main/web/front/nginx/nginx.conf
+            curl -v -o ~/empolimer/nginx/nginx.conf https://raw.githubusercontent.com/aleksioprime/empolimer/main/web/front/nginx/nginx.conf
           else
             echo "Файл nginx/nginx.conf уже существует. Не скачиваем."
           fi
@@ -51,8 +47,8 @@ jobs:
           if [ ! -f ~/empolimer/mosquitto/config/mosquitto.conf ]; then
             echo "Файл mosquitto/config/mosquitto.conf не найден. Скачиваем..."
             mkdir -p ~/empolimer/mosquitto/config
-            curl -v -o ~/empolimer/mosquitto/config/mosquitto.conf https://raw.githubusercontent.com/aleksioprime/sk-empolimer/main/web/mosquitto/config/mosquitto.conf
-            curl -v -o ~/empolimer/mosquitto/config/password.txt https://raw.githubusercontent.com/aleksioprime/sk-empolimer/main/web/mosquitto/config/password.txt
+            curl -v -o ~/empolimer/mosquitto/config/mosquitto.conf https://raw.githubusercontent.com/aleksioprime/empolimer/main/web/mosquitto/config/mosquitto.conf
+            curl -v -o ~/empolimer/mosquitto/config/password.txt https://raw.githubusercontent.com/aleksioprime/empolimer/main/web/mosquitto/config/password.txt
           else
             echo "Файл mosquitto/config/mosquitto.conf уже существует. Не скачиваем."
           fi
@@ -61,7 +57,7 @@ jobs:
           if [ ! -f ~/empolimer/nodered/settings.js ]; then
             echo "Файл nodered/settings.js не найден. Скачиваем..."
             mkdir -p ~/empolimer/nodered
-            curl -v -o ~/empolimer/nodered/settings.js https://raw.githubusercontent.com/aleksioprime/sk-empolimer/main/web/nodered/settings.js
+            curl -v -o ~/empolimer/nodered/settings.js https://raw.githubusercontent.com/aleksioprime/empolimer/main/web/nodered/settings.js
           else
             echo "Файл nodered/settings.js уже существует. Не скачиваем."
           fi
