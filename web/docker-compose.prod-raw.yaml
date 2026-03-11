@@ -1,9 +1,12 @@
 x-app: &app
-  restart: unless-stopped
+  env_file:
+    - ./.env
+  restart: always
+  platform: linux/amd64
 
 services:
   postgres:
-    image: postgres:16
+    image: postgres:14
     container_name: empolimer-postgres
     <<: *app
     healthcheck:
@@ -34,8 +37,8 @@ services:
       retries: 5
 
   backend:
-    image: ghcr.io/aleksioprime/empolimer-backend:${BACKEND_IMAGE_TAG:-latest}
-    container_name: empolimer-backend
+    image: aleksioprime/empolimer-back:latest
+    container_name: empolimer-back
     <<: *app
     command: python src/main.py
     volumes:
@@ -47,7 +50,7 @@ services:
         condition: service_healthy
 
   worker:
-    image: ghcr.io/aleksioprime/empolimer-worker:${WORKER_IMAGE_TAG:-latest}
+    image: aleksioprime/empolimer-worker:latest
     container_name: empolimer-worker
     <<: *app
     depends_on:
@@ -57,11 +60,18 @@ services:
         condition: service_started
 
   frontend:
-    image: ghcr.io/aleksioprime/empolimer-frontend:${FRONTEND_IMAGE_TAG:-latest}
+    image: aleksioprime/empolimer-front:latest
     <<: *app
-    container_name: empolimer-frontend
+    container_name: empolimer-front
+    ports:
+      - "80:80"
+      - "443:443"
     volumes:
       - media:/usr/share/nginx/html/media
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+      - /var/www/certbot:/var/www/certbot
+      - /root/empolimer/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       backend:
         condition: service_started
@@ -73,6 +83,18 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: empolimer-mqtt
+    <<: *app
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
 
   nodered:
     image: nodered/node-red
@@ -90,4 +112,6 @@ volumes:
   media:
   postgres_volume:
   redis_volume:
+  mosquitto_data:
+  mosquitto_log:
   nodered_data:

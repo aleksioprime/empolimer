@@ -27,6 +27,9 @@ DHT dht(DHTPIN, DHTTYPE);
 // --- Программный последовательный порт для Raspberry Pi ---
 SoftwareSerial PiSerial(9, 10);
 
+// --- Программный последовательный порт для ESP8266 ---
+SoftwareSerial EspSerial(2, 3); // RX=2, TX=3 (Arduino)
+
 // --- Аппаратный Serial1 для модема (TX1=1, RX1=0 на Micro Pro) ---
 TinyGsm modem(Serial1);
 TinyGsmClient gsmClient(modem);
@@ -69,6 +72,7 @@ bool dataReady = false;
 void setup() {
   Serial.begin(9600);
   PiSerial.begin(9600);
+  EspSerial.begin(9600);
   Serial1.begin(9600);
 
   // Подготовка пина для мониторинга заряда
@@ -95,6 +99,14 @@ void loop() {
   // --- Управление лентой через PiSerial ---
   if (PiSerial.available()) {
     String cmd = PiSerial.readStringUntil('\n');
+    cmd.trim();
+    if (cmd == "LED_ON") phytoLedOn();
+    if (cmd == "LED_OFF") phytoLedOff();
+  }
+
+  // --- Управление лентой через EspSerial ---
+  if (EspSerial.available()) {
+    String cmd = EspSerial.readStringUntil('\n');
     cmd.trim();
     if (cmd == "LED_ON") phytoLedOn();
     if (cmd == "LED_OFF") phytoLedOff();
@@ -148,6 +160,7 @@ void loop() {
         String serialLine = "DATA;" + dt + ";" + String(t, 1) + ";" + String(h, 1) + ";" + String(batt, 2);
         Serial.println(serialLine);
         PiSerial.println(serialLine);
+        EspSerial.println(serialLine);
 
         dataReady = false;
       }

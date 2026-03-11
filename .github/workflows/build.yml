@@ -1,4 +1,4 @@
-name: Deploy to Docker Hub
+name: Build and Push to GHCR
 
 run-name: "Build and push Docker images for ${{ github.ref_name }} by ${{ github.actor }}"
 
@@ -10,67 +10,90 @@ on:
       - 'web/**'
       - '.github/workflows/build.yml'
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
 
-    - name: Run backend tests
+    - name: Run tests
       run: |
-        echo "Тесты бэкенда пока отключены. Возвращаем успешный статус."
-
-    - name: Run frontend tests
-      run: |
-        echo "Тесты фронтенда пока отключены. Возвращаем успешный статус."
+        echo "Тесты пока отключены. Возвращаем успешный статус."
 
   build:
     runs-on: ubuntu-latest
     needs: test
 
-    outputs:
-      build_backend: ${{ steps.check_changes.outputs.BUILD_BACKEND }}
-      build_frontend: ${{ steps.check_changes.outputs.BUILD_FRONTEND }}
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Export ENV_VARS
-      run: |
-        printf "%s\n" "${{ secrets.ENV_VARS }}" | while IFS= read -r line; do
-          if [[ ! -z "$line" && "$line" != \#* ]]; then
-            echo "$line" >> $GITHUB_ENV
-          fi
-        done
+      # Сборка Docker-образа бэкенда и пуш в GHCR
+      - name: Build and Push Backend Image
+        run: |
+          docker build \
+            --label "org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
+            -t "${BACKEND_IMAGE}:latest" \
+            -t "${BACKEND_IMAGE}:${{ github.sha }}" \
+            ./app/backend
+          docker push "${BACKEND_IMAGE}:latest"
+          docker push "${BACKEND_IMAGE}:${{ github.sha }}"
 
-    - name: Build and push backend image
-      run: |
-        docker build -t aleksioprime/empolimer-back:latest ./web/back
-        docker push aleksioprime/empolimer-back:latest
+      # Сборка Docker-образа фронтенда и пуш в GHCR
+      - name: Build and Push Frontend Image
+        run: |
+          docker build --target prod \
+            --label "org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
+            --build-arg VITE_LOGGING=0 \
+            --build-arg VITE_API_URL="https://empolimer.ru" \
+            -t "${FRONTEND_IMAGE}:latest" \
+            -t "${FRONTEND_IMAGE}:${{ github.sha }}" \
+            ./app/frontend
+          docker push "${FRONTEND_IMAGE}:latest"
+          docker push "${FRONTEND_IMAGE}:${{ github.sha }}"
 
-    - name: Build and push worker image
-      run: |
-        docker build -t aleksioprime/empolimer-worker:latest ./web/worker
-        docker push aleksioprime/empolimer-worker:latest
+      # Обновляем BACKEND_IMAGE_TAG и FRONTEND_IMAGE_TAG в Coolify на текущий commit SHA
+      - name: Set image tags in Coolify
+        continue-on-error: true
+        env:
+          COOLIFY_API: ${{ secrets.COOLIFY_API }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+          COOLIFY_APP: ${{ secrets.COOLIFY_APP }}
+        run: |
+          curl -sS -X PATCH \
+            -H "Authorization: Bearer $COOLIFY_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            -H "Content-Type: application/json" \
+            "$COOLIFY_API/applications/$COOLIFY_APP/envs/bulk" \
+            -d "{\"data\":[{\"key\":\"BACKEND_IMAGE_TAG\",\"value\":\"${{ github.sha }}\"},{\"key\":\"FRONTEND_IMAGE_TAG\",\"value\":\"${{ github.sha }}\"}]}" \
+          || echo "::warning::Coolify image tags update failed"
 
-    - name: Build and push frontend image
-      run: |
-        docker build --target prod \
-          --build-arg VITE_LOGGING=0 \
-          --build-arg VITE_SERVICE_URL=$VITE_SERVICE_URL \
-          -t aleksioprime/empolimer-front:latest ./web/front
-
-        docker push aleksioprime/empolimer-front:latest
+      # Триггерим деплой в Coolify через API
+      - name: Trigger Coolify deploy
+        continue-on-error: true
+        env:
+          COOLIFY_API: ${{ secrets.COOLIFY_API }}
+          COOLIFY_APP: ${{ secrets.COOLIFY_APP }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+        run: |
+          echo "Triggering Coolify deploy... ($COOLIFY_API/deploy?uuid=$COOLIFY_APP&force=true)"
+          curl -sS -X POST \
+            "$COOLIFY_API/deploy?uuid=$COOLIFY_APP&force=true" \
+            -H "Authorization: Bearer $COOLIFY_TOKEN" \
+          || echo "::warning::Coolify deploy trigger failed"

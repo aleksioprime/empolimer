@@ -1,0 +1,22 @@
+{
+  "wifi": {
+    "ssid": "ALTEST",
+    "pass": "passtest"
+  },
+  "mqtt": {
+    "broker": "empolimer.ru",
+    "port": 1883,
+    "user": "empolimer",
+    "pass": "Techno2025",
+    "topic": "devices/wifi/air"
+  },
+  "device": {
+    "name": "wifi"
+  },
+  "battery": {
+    "r1": 15800,
+    "r2": 10000,
+    "adc_ref": 3.3,
+    "adc_max": 1023
+  }
+}
