@@ -53,8 +53,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      mosquitto:
-        condition: service_started
 
   frontend:
     image: ghcr.io/aleksioprime/empolimer-frontend:${FRONTEND_IMAGE_TAG:-latest}
@@ -74,20 +72,7 @@ services:
       postgres:
         condition: service_healthy
 
-  nodered:
-    image: nodered/node-red
-    container_name: empolimer-nodered
-    ports:
-      - "1880:1880"
-    volumes:
-      - ./nodered/settings.js:/data/settings.js
-      - nodered_data:/data
-    depends_on:
-      mosquitto:
-        condition: service_started
-
 volumes:
   media:
   postgres_volume:
   redis_volume:
-  nodered_data:
