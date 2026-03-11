@@ -14,6 +14,11 @@ permissions:
   contents: read
   packages: write
 
+env:
+  BACKEND_IMAGE: ghcr.io/${{ github.repository_owner }}/empolimer-backend
+  WORKER_IMAGE: ghcr.io/${{ github.repository_owner }}/empolimer-worker
+  FRONTEND_IMAGE: ghcr.io/${{ github.repository_owner }}/empolimer-frontend
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -52,9 +57,20 @@ jobs:
             --label "org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
             -t "${BACKEND_IMAGE}:latest" \
             -t "${BACKEND_IMAGE}:${{ github.sha }}" \
-            ./app/backend
+            ./web/back
           docker push "${BACKEND_IMAGE}:latest"
           docker push "${BACKEND_IMAGE}:${{ github.sha }}"
+
+      # Сборка Docker-образа воркера и пуш в GHCR
+      - name: Build and Push Worker Image
+        run: |
+          docker build \
+            --label "org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
+            -t "${WORKER_IMAGE}:latest" \
+            -t "${WORKER_IMAGE}:${{ github.sha }}" \
+            ./web/worker
+          docker push "${WORKER_IMAGE}:latest"
+          docker push "${WORKER_IMAGE}:${{ github.sha }}"
 
       # Сборка Docker-образа фронтенда и пуш в GHCR
       - name: Build and Push Frontend Image
@@ -62,14 +78,14 @@ jobs:
           docker build --target prod \
             --label "org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
             --build-arg VITE_LOGGING=0 \
-            --build-arg VITE_API_URL="https://empolimer.ru" \
+            --build-arg VITE_SERVICE_URL="https://empolimer.ru" \
             -t "${FRONTEND_IMAGE}:latest" \
             -t "${FRONTEND_IMAGE}:${{ github.sha }}" \
-            ./app/frontend
+            ./web/front
           docker push "${FRONTEND_IMAGE}:latest"
           docker push "${FRONTEND_IMAGE}:${{ github.sha }}"
 
-      # Обновляем BACKEND_IMAGE_TAG и FRONTEND_IMAGE_TAG в Coolify на текущий commit SHA
+      # Обновляем BACKEND_IMAGE_TAG, WORKER_IMAGE_TAG и FRONTEND_IMAGE_TAG в Coolify на текущий commit SHA
       - name: Set image tags in Coolify
         continue-on-error: true
         env:
@@ -82,7 +98,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Content-Type: application/json" \
             "$COOLIFY_API/applications/$COOLIFY_APP/envs/bulk" \
-            -d "{\"data\":[{\"key\":\"BACKEND_IMAGE_TAG\",\"value\":\"${{ github.sha }}\"},{\"key\":\"FRONTEND_IMAGE_TAG\",\"value\":\"${{ github.sha }}\"}]}" \
+            -d "{\"data\":[{\"key\":\"BACKEND_IMAGE_TAG\",\"value\":\"${{ github.sha }}\"},{\"key\":\"WORKER_IMAGE_TAG\",\"value\":\"${{ github.sha }}\"},{\"key\":\"FRONTEND_IMAGE_TAG\",\"value\":\"${{ github.sha }}\"}]}" \
           || echo "::warning::Coolify image tags update failed"
 
       # Триггерим деплой в Coolify через API
