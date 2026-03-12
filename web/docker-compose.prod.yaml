@@ -53,6 +53,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - iot
 
   frontend:
     image: ghcr.io/aleksioprime/empolimer-frontend:${FRONTEND_IMAGE_TAG:-latest}
@@ -76,3 +78,7 @@ volumes:
   media:
   postgres_volume:
   redis_volume:
+
+networks:
+  iot:
+    external: true
