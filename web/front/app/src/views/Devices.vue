@@ -338,8 +338,9 @@ const connectWebSocket = async () => {
   if (!authStore.user) return;
 
   const token = jwtService.getAccessToken()
-  // Определяем адрес WebSocket в зависимости от настроек окружения
-  const WS_BASE_URL = import.meta.env.VITE_WS_URL || import.meta.env.VITE_SERVICE_URL.replace(/^http/, 'ws')
+  // Адрес WS: явный VITE_WS_URL, иначе текущий origin страницы (wss/ws).
+  const WS_BASE_URL = import.meta.env.VITE_WS_URL
+    || `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}`
   const wsUrl = `${WS_BASE_URL}/api/v1/devices/ws/?token=${token}`
   ws = new WebSocket(wsUrl)
 
