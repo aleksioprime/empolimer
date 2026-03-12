@@ -16,8 +16,8 @@ class AuthRepository(BaseAuthRepository, BaseSQLRepository):
 
     async def get_user_by_username(self, username: str) -> User | None:
         """
-        Получает пользователя по его имени
+        Получает пользователя по его имени или email
         """
-        query = select(User).filter_by(username=username)
+        query = select(User).filter((User.username == username) | (User.email == username))
         result = await self.session.scalars(query)
         return result.one_or_none()

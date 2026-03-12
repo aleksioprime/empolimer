@@ -11,7 +11,7 @@
       <v-card class="mx-auto" width="100%" max-width="400" elevation="8">
         <v-card-text>
           <v-form @submit.prevent="login" ref="formRef" validate-on="submit">
-            <v-text-field v-model="form.username" label="Пользователь" type="email" :rules="[rules.required]"
+            <v-text-field v-model="form.username" label="Логин или Email" type="text" :rules="[rules.required]"
               prepend-inner-icon="mdi-account" autocomplete="username" required />
             <v-text-field v-model="form.password" label="Пароль" type="password" :rules="[rules.required]"
               prepend-inner-icon="mdi-lock" autocomplete="current-password" required />

@@ -4,6 +4,7 @@ import asyncio
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
+from werkzeug.security import generate_password_hash
 
 from src.models.user import User
 from src.db.postgres import async_session_maker
@@ -24,7 +25,7 @@ async def create_or_update_superuser(session: AsyncSession, username: str, passw
         if force:
             print(f"Обновляем данные суперпользователя {user.username}...")
             user.username = username
-            user.password = password
+            user.hashed_password = generate_password_hash(password)
             user.email = email
             user.is_superuser = True
             await session.commit()
