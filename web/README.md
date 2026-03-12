@@ -32,10 +32,7 @@ docker exec -it empolimer-backend alembic upgrade head
 
 Создание суперпользователя:
 ```shell
-docker-compose -p empolimer exec backend python scripts/create_superuser.py \
-  --username superuser \
-  --password 1q2w3e \
-  --email admin@empolimer.ru
+docker-compose -p empolimer exec backend python scripts/create_superuser.py --username superuser --password 1q2w3e --email admin@empolimer.ru
 ```
 
 ### Проверка:
