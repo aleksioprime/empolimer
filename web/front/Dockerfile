@@ -34,5 +34,6 @@ RUN apt update && apt install -y certbot python3-certbot-nginx
 RUN mkdir -p /var/www/certbot
 
 COPY --from=prod-builder /usr/src/app/dist /usr/share/nginx/html
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 CMD ["nginx", "-g", "daemon off;"]
