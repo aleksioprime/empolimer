@@ -1,6 +1,6 @@
 // Живое обновление списка устройств.
 //
-// Основной канал — WebSocket. Если он недоступен, данные загружаются запросами раз в
+// Основной канал - WebSocket. Если он недоступен, данные загружаются запросами раз в
 // POLL_MS, а WebSocket переподключается с нарастающей паузой. Если от сервера долго
 // нет сообщений, соединение считается зависшим и переоткрывается.
 import { jwtDecode } from 'jwt-decode';
@@ -23,9 +23,9 @@ const tokenExpiresSoon = (token) => {
 
 export class LiveConnection {
   /**
-   * onDevices(devices) — пришёл список устройств;
-   * onStatus(status) — 'connecting' | 'live' | 'polling' | 'offline';
-   * poll() — загрузить список запросом, вернуть true при успехе.
+   * onDevices(devices) - пришёл список устройств;
+   * onStatus(status) - 'connecting' | 'live' | 'polling' | 'offline';
+   * poll() - загрузить список запросом, вернуть true при успехе.
    */
   constructor({ onDevices, onStatus, poll }) {
     this.onDevices = onDevices;
@@ -69,7 +69,7 @@ export class LiveConnection {
     if (!token || tokenExpiresSoon(token)) {
       token = await handleTokenRefresh();
       if (token === false) {
-        // Сессия закончилась — на страницу входа
+        // Сессия закончилась - на страницу входа
         window.location.href = '/login';
         return;
       }

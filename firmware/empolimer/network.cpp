@@ -21,8 +21,8 @@ const uint32_t WIFI_ATTEMPT_MS = 20000;  // сколько ждать одну �
 const uint32_t MQTT_BACKOFF_MIN_MS = 2000;
 const uint32_t MQTT_BACKOFF_MAX_MS = 60000;
 const char* OFFLINE_STATUS = "{\"online\":false}";
-const uint32_t AP_AFTER_MS = 60000;      // без Wi-Fi столько времени — поднять точку доступа
-const uint32_t AP_IDLE_OFF_MS = 60000;   // Wi-Fi есть, к точке никто не подключён — выключить её
+const uint32_t AP_AFTER_MS = 60000;      // без Wi-Fi столько времени - поднять точку доступа
+const uint32_t AP_IDLE_OFF_MS = 60000;   // Wi-Fi есть, к точке никто не подключён - выключить её
 
 WiFiClient tcp;
 PubSubClient mqtt(tcp);
@@ -82,7 +82,7 @@ void wifiLoop() {
     }
   }
   if (connected) return;
-  // Переключение сетей уводит радио с канала точки доступа — не мешаем тем, кто к ней подключён.
+  // Переключение сетей уводит радио с канала точки доступа - не мешаем тем, кто к ней подключён.
   if (apOn && WiFi.softAPgetStationNum() > 0) return;
 
   if (wifiAttemptMs && millis() - wifiAttemptMs < WIFI_ATTEMPT_MS) return;
@@ -151,7 +151,7 @@ void networkBegin(void (*onMqttConnected)()) {
   setenv("TZ", cfg.timezone.c_str(), 1);
   tzset();
 
-  WiFi.persistent(false);  // не изнашивать flash настройками — они живут на SD
+  WiFi.persistent(false);  // не изнашивать flash настройками - они живут на SD
   WiFi.mode(cfg.wifiCount || cfg.apEnabled ? WIFI_STA : WIFI_OFF);
   wifiDownSinceMs = millis();
   WiFi.setAutoReconnect(true);

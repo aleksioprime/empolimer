@@ -1,6 +1,6 @@
 """Настройки станции: файл station.conf рядом с программой и аргументы командной строки.
 
-Аргументы важнее файла. Формат файла — строки "ключ = значение", # — комментарий.
+Аргументы важнее файла. Формат файла - строки "ключ = значение", # - комментарий.
 """
 
 from __future__ import annotations
@@ -15,7 +15,7 @@ DEFAULT_PATH = Path(__file__).resolve().parent.parent / "station.conf"
 
 @dataclass
 class Settings:
-    port: str = "auto"            # auto — первый /dev/ttyUSB* или /dev/ttyACM*
+    port: str = "auto"            # auto - первый /dev/ttyUSB* или /dev/ttyACM*
     camera: str = "auto"          # auto | picamera | usb | none
     camera_size: str = "640x480"
     fps: int = 10                 # на Pi Zero больше 10 кадров не нужно
@@ -24,7 +24,7 @@ class Settings:
     temp_max: float = 28.0
     hum_min: float = 40.0
     hum_max: float = 70.0
-    web_port: int = 8080          # веб-доступ к станции; 0 — выключен
+    web_port: int = 8080          # веб-доступ к станции; 0 - выключен
     web_control: bool = True      # можно ли управлять подсветкой из браузера
     stream_fps: int = 5           # кадров в секунду в видео для браузера
 
@@ -78,7 +78,7 @@ def load(argv: Optional[list[str]] = None) -> Settings:
     parser.add_argument("--fps", type=int)
     parser.add_argument("--window", dest="fullscreen", action="store_false", default=None,
                         help="окно вместо полноэкранного режима")
-    parser.add_argument("--web-port", dest="web_port", type=int, help="порт веб-доступа (0 — выключить)")
+    parser.add_argument("--web-port", dest="web_port", type=int, help="порт веб-доступа (0 - выключить)")
     args = parser.parse_args(argv)
 
     values = read_file(args.config)

@@ -122,7 +122,7 @@ void handleFiles() {
   sendJson(200, doc);
 }
 
-// Только имена журналов вида 2026-10-11.csv или no-time.csv — без путей.
+// Только имена журналов вида 2026-10-11.csv или no-time.csv - без путей.
 bool safeLogName(const String& name) {
   if (!name.endsWith(".csv") || name.length() > 20) return false;
   for (char c : name) {

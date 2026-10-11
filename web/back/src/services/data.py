@@ -79,7 +79,7 @@ class DeviceDataService:
 
     async def export_to_excel(self, device_id: UUID, params: DeviceDataPeriodParams, tz: timezone) -> bytes:
         """
-        Формирует файл Excel с измерениями за период (без периода — все)
+        Формирует файл Excel с измерениями за период (без периода - все)
         """
         async with self.uow:
             rows = await self.uow.data.get_all(device_id, params.start, params.end)

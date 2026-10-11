@@ -29,7 +29,7 @@ export const useDeviceStore = defineStore("device", {
       this.lastUpdate = new Date();
       this.error = null;
     },
-    // Загрузка списка устройств запросом; true — успешно
+    // Загрузка списка устройств запросом; true - успешно
     async loadDevices() {
       const res = await resources.device.getDevices();
       if (res.__state === "success") {
@@ -39,7 +39,7 @@ export const useDeviceStore = defineStore("device", {
       this.error = res.data?.message || 'Не удалось загрузить устройства';
       return false;
     },
-    // Живое обновление: WebSocket, при сбое — опрос запросами
+    // Живое обновление: WebSocket, при сбое - опрос запросами
     startLive() {
       if (!live) {
         live = new LiveConnection({

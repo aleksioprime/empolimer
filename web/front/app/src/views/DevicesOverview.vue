@@ -12,7 +12,7 @@
     </v-btn>
   </div>
 
-  <!-- Сводка: клик — фильтр -->
+  <!-- Сводка: клик - фильтр -->
   <v-row dense class="mb-2">
     <v-col v-for="tile in tiles" :key="tile.key" cols="6" md="3">
       <v-card :variant="filter === tile.key ? 'tonal' : 'elevated'" :color="filter === tile.key ? tile.color : undefined"
@@ -45,8 +45,8 @@
     <v-icon size="56" color="primary" class="mb-3">mdi-access-point-network</v-icon>
     <div class="text-h6 mb-2">Устройств пока нет</div>
     <div class="text-body-2 text-medium-emphasis mx-auto" style="max-width: 520px">
-      Запишите на SD-карту устройства <code>config.json</code> с адресом сервера — устройство появится здесь само
-      после первого измерения. Его идентификатор — поле <code>device.id</code>.
+      Запишите на SD-карту устройства <code>config.json</code> с адресом сервера - устройство появится здесь само
+      после первого измерения. Его идентификатор - поле <code>device.id</code>.
     </div>
   </v-card>
 

@@ -83,7 +83,7 @@
       <v-card-item>
         <v-card-title>История</v-card-title>
         <v-card-subtitle v-if="series">
-          {{ formatDateTime(series.start) }} — {{ formatDateTime(series.end) }} ·
+          {{ formatDateTime(series.start) }} - {{ formatDateTime(series.end) }} ·
           {{ series.stats.count }} измерений{{ series.bucket_seconds > 60 ? ` · точка = среднее за ${bucketText}` : '' }}
         </v-card-subtitle>
         <template #append>
@@ -203,7 +203,7 @@ const notify = (text, color = 'success') => Object.assign(toast, { show: true, t
 // --- состояние модулей ---
 
 const yesNo = (value, yes, no) => value === undefined || value === null
-  ? { value: '—' }
+  ? { value: '-' }
   : { value: value ? yes : no, color: value ? 'success' : 'error' }
 
 const modules = computed(() => {
@@ -215,16 +215,16 @@ const modules = computed(() => {
       value: device.value?.last_seen ? timeAgo(device.value.last_seen, now.value) : 'никогда',
       color: online ? 'success' : 'error' },
     { label: 'Wi-Fi', icon: wifi?.icon || 'mdi-wifi-off',
-      value: wifi ? `${wifi.text}, ${s.rssi} дБм` : (online ? '—' : 'нет связи') },
+      value: wifi ? `${wifi.text}, ${s.rssi} дБм` : (online ? '-' : 'нет связи') },
     { label: 'Датчик', icon: 'mdi-thermometer', ...yesNo(s.sensor, 'работает', 'не отвечает') },
     { label: 'SD-карта', icon: 'mdi-sd', ...yesNo(s.sd, 'есть', 'нет') },
     { label: 'Часы', icon: 'mdi-clock-check-outline', ...yesNo(s.time, 'синхронизированы', 'не установлены') },
     { label: 'Подсветка', icon: 'mdi-lightbulb-outline',
-      value: s.light === undefined ? '—' : `${s.light ? 'включена' : 'выключена'}${s.light_auto ? ' (расписание)' : ''}` },
+      value: s.light === undefined ? '-' : `${s.light ? 'включена' : 'выключена'}${s.light_auto ? ' (расписание)' : ''}` },
     { label: 'Ждут отправки', icon: 'mdi-tray-full', value: s.queue ? `${s.queue} измерений` : 'нет' },
-    { label: 'Измерение', icon: 'mdi-timer-outline', value: s.interval ? `раз в ${s.interval} с` : '—' },
-    { label: 'Прошивка', icon: 'mdi-chip', value: s.fw ? `${s.fw} · ${s.board}` : '—' },
-    { label: 'IP-адрес', icon: 'mdi-ip-network-outline', value: online && s.ip ? s.ip : '—' },
+    { label: 'Измерение', icon: 'mdi-timer-outline', value: s.interval ? `раз в ${s.interval} с` : '-' },
+    { label: 'Прошивка', icon: 'mdi-chip', value: s.fw ? `${s.fw} · ${s.board}` : '-' },
+    { label: 'IP-адрес', icon: 'mdi-ip-network-outline', value: online && s.ip ? s.ip : '-' },
   ]
 })
 
@@ -265,7 +265,7 @@ const loadSeries = async () => {
     series.value = data
     seriesError.value = ''
   } else if (!series.value) {
-    seriesError.value = 'Не удалось загрузить график — повторим автоматически'
+    seriesError.value = 'Не удалось загрузить график - повторим автоматически'
   }
 }
 

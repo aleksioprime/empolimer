@@ -1,7 +1,7 @@
 """Общее состояние станции: его заполняют связь с ESP и камера, читает веб-сервер.
 
 Модуль без Qt: кадр хранится как есть, а в JPEG его превращает переданная функция
-encode — так веб-сервер и тесты не зависят от Qt.
+encode - так веб-сервер и тесты не зависят от Qt.
 """
 
 from __future__ import annotations
@@ -82,7 +82,7 @@ class StationState:
         return frame_id, data
 
     def wait_frame(self, after_id: int, timeout: float) -> bool:
-        """Ждать кадр новее after_id; False — не дождались."""
+        """Ждать кадр новее after_id; False - не дождались."""
         with self._frame_ready:
             return self._frame_ready.wait_for(lambda: self._frame_id > after_id, timeout)
 

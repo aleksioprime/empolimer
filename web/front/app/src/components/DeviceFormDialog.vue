@@ -10,7 +10,7 @@
 
           <div class="text-subtitle-2 mt-2">Норма</div>
           <div class="text-caption text-medium-emphasis mb-2">
-            Пустые поля — значения по умолчанию сервера. Вне нормы устройство помечается «Требует внимания».
+            Пустые поля - значения по умолчанию сервера. Вне нормы устройство помечается «Требует внимания».
           </div>
           <v-row dense>
             <v-col cols="6"><v-text-field v-model="form.temp_min" label="Температура от, °C" type="number" :placeholder="placeholder('temp_min')" /></v-col>
@@ -52,7 +52,7 @@ const nameRules = [
   v => /^[A-Za-z0-9_-]{1,32}$/.test(v) || 'Латиница, цифры, - и _ (до 32 символов)',
 ]
 
-// Подсказка — текущая норма устройства (своя или по умолчанию)
+// Подсказка - текущая норма устройства (своя или по умолчанию)
 const placeholder = (key) => props.device?.thresholds?.[key] ?? ''
 
 watch(() => props.modelValue, (open) => {

@@ -93,12 +93,12 @@ class MQTTWorker:
         async with session_factory() as session:
             device = await self._device(session, name)
             if device is None:
-                logger.warning(f"Устройство «{name}» не зарегистрировано — добавьте его в веб-интерфейсе")
+                logger.warning(f"Устройство «{name}» не зарегистрировано - добавьте его в веб-интерфейсе")
                 return
 
             if kind == "status":
                 device.status = {**(device.status or {}), **payload, "received_at": now.isoformat()}
-                # {"online": false} публикует брокер после обрыва — это не контакт с устройством.
+                # {"online": false} публикует брокер после обрыва - это не контакт с устройством.
                 if payload.get("online") is not False:
                     device.last_seen = now
                 await session.commit()

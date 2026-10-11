@@ -70,7 +70,7 @@ def qr_pixmap(text: str, size: int) -> Optional[QPixmap]:
 
 
 class WebDialog(QDialog):
-    """Адрес станции крупно и QR-код — чтобы открыть страницу с телефона."""
+    """Адрес станции крупно и QR-код - чтобы открыть страницу с телефона."""
 
     def __init__(self, info: dict, parent=None):
         super().__init__(parent)
@@ -109,7 +109,7 @@ class WebDialog(QDialog):
 
 
 class WebRow(QFrame):
-    """Строка «Веб-доступ»: состояние сервера, адрес и подключённые; по нажатию — QR-код."""
+    """Строка «Веб-доступ»: состояние сервера, адрес и подключённые; по нажатию - QR-код."""
 
     clicked = pyqtSignal()
 
@@ -154,14 +154,14 @@ class MetricCard(QFrame):
         layout.setContentsMargins(14, 10, 14, 10)
         layout.setSpacing(2)
         self._label = QLabel(label, objectName="cardLabel")
-        self._value = QLabel("—", objectName="cardValue")
+        self._value = QLabel("-", objectName="cardValue")
         self._hint = QLabel("", objectName="cardHint")
         for widget in (self._label, self._value, self._hint):
             layout.addWidget(widget)
 
     def show_value(self, value: Optional[float], state: str, hint: str) -> None:
         color = COLORS[state]
-        self._value.setText("—" if value is None else f"{value:.{self._digits}f} {self._unit}")
+        self._value.setText("-" if value is None else f"{value:.{self._digits}f} {self._unit}")
         self._value.setStyleSheet(f"color: {color};")
         self._hint.setText(hint)
         self._hint.setStyleSheet(f"color: {color};")
@@ -195,7 +195,7 @@ class MainWindow(QMainWindow):
         self._status = protocol.Status()
         self._connected = False
 
-        self.setWindowTitle("ЕмПолимер — станция")
+        self.setWindowTitle("ЕмПолимер - станция")
         self.setStyleSheet(STYLE)
         self.setCentralWidget(self._build())
         self.setMinimumSize(640, 400)
@@ -387,9 +387,9 @@ class MainWindow(QMainWindow):
         stale = view.is_stale(age, self._status.get("interval"))
         text = f"Обновлено: {view.ago(age)}"
         if self._connected and self._status.get("sensor") is False:
-            text, stale = "Датчик не отвечает — проверьте провод", True
+            text, stale = "Датчик не отвечает - проверьте провод", True
         elif stale:
-            text += " — данные устарели"
+            text += " - данные устарели"
         self._updated.setText(text)
         self._updated.setStyleSheet("color: #f0883e;" if stale else "")
 

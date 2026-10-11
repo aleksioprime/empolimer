@@ -23,7 +23,7 @@ TIME_SYNC_S = 3600
 
 
 def find_port() -> Optional[str]:
-    """Первый USB-последовательный порт: NodeMCU и ESP32 DevKit — ttyUSB, платы с нативным USB — ttyACM."""
+    """Первый USB-последовательный порт: NodeMCU и ESP32 DevKit - ttyUSB, платы с нативным USB - ttyACM."""
     ports = sorted(glob.glob("/dev/ttyUSB*")) + sorted(glob.glob("/dev/ttyACM*"))
     return ports[0] if ports else None
 
@@ -107,7 +107,7 @@ class SerialLink(QObject):
 
                 buffer += link.read(link.in_waiting or 1)
                 *lines, buffer = buffer.split(b"\n")
-                if len(buffer) > 4096:  # строка без конца — мусор
+                if len(buffer) > 4096:  # строка без конца - мусор
                     buffer = b""
                 for raw in lines:
                     self._dispatch(raw.decode("utf-8", errors="replace"))

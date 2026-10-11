@@ -26,7 +26,7 @@ const props = defineProps({
   min: Number,
   max: Number,
   large: Boolean,
-  muted: Boolean, // устройство не на связи — значение устарело, без цветовой оценки
+  muted: Boolean, // устройство не на связи - значение устарело, без цветовой оценки
 })
 
 const level = computed(() => props.min === undefined ? null : valueLevel(props.value, props.min, props.max))

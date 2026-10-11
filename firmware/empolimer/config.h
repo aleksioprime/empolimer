@@ -13,13 +13,13 @@ struct WifiNetwork {
 };
 
 struct Config {
-  String deviceId;                 // латиница, цифры, - и _; пусто — "esp-<chip id>"
+  String deviceId;                 // латиница, цифры, - и _; пусто - "esp-<chip id>"
   uint32_t intervalSec = 60;       // период измерений
 
   WifiNetwork wifi[MAX_WIFI_NETWORKS];
   uint8_t wifiCount = 0;
 
-  String mqttHost;                 // пусто — данные только на SD и в Raspberry
+  String mqttHost;                 // пусто - данные только на SD и в Raspberry
   uint16_t mqttPort = 1883;
   String mqttUser;
   String mqttPass;
@@ -30,14 +30,14 @@ struct Config {
   uint8_t dhtType = 11;            // 11 или 22
 
   uint16_t lightCount = 30;
-  uint32_t lightColor = 0xC800B4;  // фиолетовый — для растений
+  uint32_t lightColor = 0xC800B4;  // фиолетовый - для растений
   uint8_t lightBrightness = 200;
-  int16_t lightOnMinute = -1;      // расписание, минуты от полуночи; -1 — нет
+  int16_t lightOnMinute = -1;      // расписание, минуты от полуночи; -1 - нет
   int16_t lightOffMinute = -1;
 
   bool webEnabled = true;          // страница устройства на порту 80
   bool webControl = true;          // управление подсветкой со страницы
-  String apPass = "empolimer";     // пароль своей точки доступа (8+ символов; пусто — открытая)
+  String apPass = "empolimer";     // пароль своей точки доступа (8+ символов; пусто - открытая)
   bool apEnabled = true;           // поднимать точку доступа, если Wi-Fi недоступен
 
   float tempMin = 18, tempMax = 28;  // норма для подсветки значений на странице

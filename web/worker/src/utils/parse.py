@@ -1,4 +1,4 @@
-"""Разбор MQTT-сообщений устройств (форматы — docs/protocol.md)."""
+"""Разбор MQTT-сообщений устройств (форматы - docs/protocol.md)."""
 
 import math
 import re
@@ -8,7 +8,7 @@ from typing import Optional
 
 NAME_PATTERN = re.compile(r"^[A-Za-z0-9_-]{1,32}$")
 
-# Границы правдоподобных значений: за ними — сбой датчика, а не погода.
+# Границы правдоподобных значений: за ними - сбой датчика, а не погода.
 LIMITS = {"temp": (-60.0, 100.0), "hum": (0.0, 100.0), "bat": (0.0, 30.0)}
 MAX_CLOCK_AHEAD = timedelta(minutes=10)
 MAX_AGE = timedelta(days=366)
@@ -54,8 +54,8 @@ def _value(payload: dict, key: str) -> Optional[float]:
 
 def parse_timestamp(payload: dict, now: datetime) -> datetime:
     """
-    ts — unix-время (новые прошивки), datetime — ISO-строка (старые). Без времени,
-    с явно неверным временем (часы устройства не установлены) — время приёма.
+    ts - unix-время (новые прошивки), datetime - ISO-строка (старые). Без времени,
+    с явно неверным временем (часы устройства не установлены) - время приёма.
     """
     moment = None
     ts = payload.get("ts")

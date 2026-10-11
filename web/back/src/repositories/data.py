@@ -37,14 +37,14 @@ class DeviceDataRepository:
         return list(result), total or 0
 
     async def get_all(self, device_id: UUID, start: datetime | None, end: datetime | None) -> List[DeviceData]:
-        """ Все измерения за период по возрастанию времени — для выгрузки """
+        """ Все измерения за период по возрастанию времени - для выгрузки """
         query = self._period(select(DeviceData), device_id, start, end).order_by(DeviceData.timestamp.asc())
         return list(await self.session.scalars(query))
 
     async def get_series(self, device_id: UUID, start: datetime, end: datetime, bucket_seconds: int) -> list[SeriesPoint]:
         """
         Точки графика: измерения группируются по отрезкам bucket_seconds (date_bin, PostgreSQL 14+),
-        для каждого — среднее, минимум и максимум. Пустые отрезки не возвращаются — на графике это разрыв.
+        для каждого - среднее, минимум и максимум. Пустые отрезки не возвращаются - на графике это разрыв.
         """
         bucket = func.date_bin(
             literal_column(f"interval '{int(bucket_seconds)} seconds'"),

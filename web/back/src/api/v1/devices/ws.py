@@ -10,8 +10,8 @@ router = APIRouter()
 @router.websocket("/ws/")
 async def websocket_devices(websocket: WebSocket):
     """
-    Живое обновление списка устройств. Токен — в query-параметре token.
-    Клиент может присылать "ping" — сервер ответит "pong".
+    Живое обновление списка устройств. Токен - в query-параметре token.
+    Клиент может присылать "ping" - сервер ответит "pong".
     """
     token = websocket.query_params.get("token")
     user = JWTBearer.parse_token(token) if token else None

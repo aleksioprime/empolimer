@@ -45,7 +45,7 @@ String lightCommand(const String& command, const String& arg) {
   String value = arg.startsWith("ON") ? arg.substring(2) : arg;
   value.trim();
   if (value.length() && !parseByte(value, level)) {
-    return ack(command, false, "яркость — число от 0 до 255");
+    return ack(command, false, "яркость - число от 0 до 255");
   }
   if (level == 0) lightOff();
   else lightOn(level);

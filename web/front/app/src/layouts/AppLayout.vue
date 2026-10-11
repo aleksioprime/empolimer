@@ -48,7 +48,7 @@
     <v-banner v-if="deviceStore.connection === 'offline'" color="error" icon="mdi-cloud-off-outline" lines="one"
       class="text-body-2">
       Нет связи с сервером.
-      <template v-if="deviceStore.lastUpdate">Показаны данные на {{ formatTime(deviceStore.lastUpdate) }} — </template>
+      <template v-if="deviceStore.lastUpdate">Показаны данные на {{ formatTime(deviceStore.lastUpdate) }} - </template>
       страница обновится сама, когда связь восстановится.
     </v-banner>
     <v-container class="py-6" style="max-width: 1400px">
@@ -83,8 +83,8 @@ const nav = computed(() => [
 const CONNECTION = {
   connecting: { text: 'Подключение…', color: 'grey-lighten-1', icon: 'mdi-loading mdi-spin', hint: 'Подключение к серверу' },
   live: { text: 'Онлайн', color: 'green-lighten-1', icon: 'mdi-circle', hint: 'Данные обновляются сразу, как приходят с устройств' },
-  polling: { text: 'Обновление раз в 10 с', color: 'amber-lighten-1', icon: 'mdi-sync', hint: 'Живой канал недоступен — данные запрашиваются раз в 10 секунд' },
-  offline: { text: 'Нет связи', color: 'red-lighten-1', icon: 'mdi-cloud-off-outline', hint: 'Сервер недоступен — показаны последние полученные данные' },
+  polling: { text: 'Обновление раз в 10 с', color: 'amber-lighten-1', icon: 'mdi-sync', hint: 'Живой канал недоступен - данные запрашиваются раз в 10 секунд' },
+  offline: { text: 'Нет связи', color: 'red-lighten-1', icon: 'mdi-cloud-off-outline', hint: 'Сервер недоступен - показаны последние полученные данные' },
 };
 const connectionInfo = computed(() => CONNECTION[deviceStore.connection] || CONNECTION.connecting);
 

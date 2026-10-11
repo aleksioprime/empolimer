@@ -28,8 +28,8 @@ def get_device_data_period_params(
 
 
 def get_device_data_series_params(
-    start: datetime | None = Query(None, description="Начальная дата/время (по умолчанию — сутки назад)"),
-    end: datetime | None = Query(None, description="Конечная дата/время (по умолчанию — сейчас)"),
+    start: datetime | None = Query(None, description="Начальная дата/время (по умолчанию - сутки назад)"),
+    end: datetime | None = Query(None, description="Конечная дата/время (по умолчанию - сейчас)"),
     points: int = Query(200, ge=10, le=2000, description="Максимум точек на графике"),
 ) -> DeviceDataSeriesParams:
     """ Query-параметры графика """

@@ -23,7 +23,7 @@ TEMPLATES="$APP/.deploy/templates"
 REBOOT=0
 
 if [[ $CODE_ONLY -eq 0 ]]; then
-  # PyQt5 и Picamera2 — только из apt: на Pi Zero их не собрать через pip.
+  # PyQt5 и Picamera2 - только из apt: на Pi Zero их не собрать через pip.
   PACKAGES=(python3-pyqt5 python3-serial python3-picamera2 python3-qrcode fonts-dejavu-core)
   [[ $USB_CAMERA -eq 1 ]] && PACKAGES+=(python3-opencv)
   MISSING=()
@@ -36,7 +36,7 @@ if [[ $CODE_ONLY -eq 0 ]]; then
     sudo apt-get install -y --no-install-recommends "${MISSING[@]}"
   fi
 
-  # dialout — доступ к /dev/ttyUSB*, video — к камере.
+  # dialout - доступ к /dev/ttyUSB*, video - к камере.
   for group in dialout video; do
     if ! id -nG "$USER" | grep -qw "$group"; then
       sudo usermod -aG "$group" "$USER"
@@ -79,5 +79,5 @@ fi
 
 echo "== Готово. Запуск: ярлык «Станция ЕмПолимер» на рабочем столе или python3 $APP/station.py"
 if [[ $REBOOT -eq 1 ]]; then
-  echo "!! Пользователь добавлен в группы dialout/video — перезагрузите плату: sudo reboot"
+  echo "!! Пользователь добавлен в группы dialout/video - перезагрузите плату: sudo reboot"
 fi

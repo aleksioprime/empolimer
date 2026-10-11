@@ -10,7 +10,7 @@ from src.dependencies.uow import get_unit_of_work
 logger = logging.getLogger(__name__)
 
 CHECK_INTERVAL_S = 5
-HEARTBEAT_S = 30  # даже без изменений клиенты получают данные — так они видят, что связь жива
+HEARTBEAT_S = 30  # даже без изменений клиенты получают данные - так они видят, что связь жива
 
 
 async def periodic_broadcast():

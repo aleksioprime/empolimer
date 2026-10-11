@@ -1,7 +1,7 @@
 """Камера в отдельном потоке: модуль камеры Raspberry (Picamera2) или USB-камера (OpenCV).
 
 Если камера не найдена или отвалилась, поток пробует снова раз в несколько секунд,
-а интерфейс показывает надпись вместо картинки — показания ESP при этом работают.
+а интерфейс показывает надпись вместо картинки - показания ESP при этом работают.
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ class PiCamera:
         from picamera2 import Picamera2  # есть только на Raspberry: python3-picamera2
 
         self._camera = Picamera2()
-        # RGB888 в Picamera2 — байты в порядке B, G, R.
+        # RGB888 в Picamera2 - байты в порядке B, G, R.
         config = self._camera.create_preview_configuration(main={"format": "RGB888", "size": size})
         self._camera.configure(config)
         self._camera.start()

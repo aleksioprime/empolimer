@@ -5,9 +5,9 @@ import logger from '@/common/helpers/logger';
 import { useAuthStore } from '@/stores/auth';
 
 // Обновление access-токена. Результат:
-//   строка — новый токен;
-//   false  — сервер отклонил refresh-токен: сессия закончилась, нужен вход;
-//   null   — сервер недоступен: сессию не трогаем, попробуем позже.
+//   строка - новый токен;
+//   false  - сервер отклонил refresh-токен: сессия закончилась, нужен вход;
+//   null   - сервер недоступен: сессию не трогаем, попробуем позже.
 let refreshing = null;
 
 async function _refreshToken() {

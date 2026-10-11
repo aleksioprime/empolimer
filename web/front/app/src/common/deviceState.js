@@ -26,7 +26,7 @@ export const valueLevel = (value, min, max) => {
 export const LEVEL_COLORS = { ok: 'success', low: 'info', high: 'warning' };
 export const LEVEL_TEXT = { ok: 'в норме', low: 'ниже нормы', high: 'выше нормы' };
 
-// Устройства с проблемами — первыми, затем по имени
+// Устройства с проблемами - первыми, затем по имени
 const ORDER = { offline: 0, warning: 1, new: 2, ok: 3 };
 export const sortDevices = (devices) =>
   [...devices].sort((a, b) => (ORDER[a.state] ?? 9) - (ORDER[b.state] ?? 9) || a.name.localeCompare(b.name));

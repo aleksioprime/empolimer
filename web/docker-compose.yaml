@@ -1,6 +1,6 @@
 # Локальная разработка: весь стек, включая брокер MQTT и adminer.
 #   cp .env.example .env && docker compose -p empolimer up -d --build
-# Веб — http://localhost:8202, API — http://localhost:8201/api/openapi, adminer — http://localhost:8203
+# Веб - http://localhost:8202, API - http://localhost:8201/api/openapi, adminer - http://localhost:8203
 x-app: &app
   env_file: .env
   restart: unless-stopped

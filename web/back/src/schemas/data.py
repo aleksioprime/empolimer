@@ -4,7 +4,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from src.schemas.device import DeviceDataSchema  # noqa: F401 — общая схема измерения
+from src.schemas.device import DeviceDataSchema  # noqa: F401 - общая схема измерения
 
 
 class DeviceDataQueryParams(BaseModel):
@@ -15,8 +15,8 @@ class DeviceDataQueryParams(BaseModel):
 
 
 class DeviceDataPeriodParams(BaseModel):
-    start: Optional[datetime] = Field(None, description="Начальная дата/время (по умолчанию — сутки назад)")
-    end: Optional[datetime] = Field(None, description="Конечная дата/время (по умолчанию — сейчас)")
+    start: Optional[datetime] = Field(None, description="Начальная дата/время (по умолчанию - сутки назад)")
+    end: Optional[datetime] = Field(None, description="Конечная дата/время (по умолчанию - сейчас)")
 
 
 class DeviceDataSeriesParams(DeviceDataPeriodParams):

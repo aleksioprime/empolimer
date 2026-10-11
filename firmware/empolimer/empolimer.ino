@@ -1,12 +1,12 @@
-// ЕмПолимер — прошивка модульного устройства микроклимата.
+// ЕмПолимер - прошивка модульного устройства микроклимата.
 //
 // Платы: NodeMCU ESP8266 (ESP-12E) и ESP32 DevKit. Модули: датчик DHT11/DHT22,
 // адресная лента подсветки, SD-карта (настройки, журнал, очередь), Wi-Fi + MQTT,
 // страница устройства в браузере, USB-порт для Raspberry. Любой модуль можно
-// не подключать — остальные работают.
+// не подключать - остальные работают.
 //
-// Пины — board.h, настройки — /config.json на SD (пример в firmware/sd-card/),
-// форматы сообщений — docs/protocol.md.
+// Пины - board.h, настройки - /config.json на SD (пример в firmware/sd-card/),
+// форматы сообщений - docs/protocol.md.
 
 #include <ArduinoJson.h>
 #include <DHT.h>
@@ -30,7 +30,7 @@ static const uint8_t QUEUE_BATCH = 10;  // сколько накопленных
 static DHT* dht = nullptr;
 static uint32_t lastMeasureAttemptMs = 0;
 static uint32_t lastStatusMs = 0;
-static bool measureRequested = true;  // первое измерение — сразу после старта
+static bool measureRequested = true;  // первое измерение - сразу после старта
 
 static String defaultDeviceId() {
 #if defined(ESP32)
@@ -48,7 +48,7 @@ static float readBattery() {
   return analogRead(PIN_BATTERY) * cfg.adcRef / ADC_MAX * cfg.batteryDivider;
 }
 
-// Измерение в JSON. ts есть только при верных часах — иначе время поставит сервер.
+// Измерение в JSON. ts есть только при верных часах - иначе время поставит сервер.
 static String dataJson(time_t ts, bool withType) {
   JsonDocument doc;
   if (withType) doc["type"] = "data";
@@ -141,7 +141,7 @@ static void onMqttConnected() {
 }
 
 bool timeValid() {
-  return time(nullptr) > 1700000000;  // позже ноября 2023 — значит, часы установлены
+  return time(nullptr) > 1700000000;  // позже ноября 2023 - значит, часы установлены
 }
 
 void sendStatus() {
@@ -160,11 +160,11 @@ void setup() {
 
   if (storageBegin()) {
     if (!configLoad("/config.json", state.configError)) {
-      logf("config.json: %s — работаю с настройками по умолчанию", state.configError.c_str());
+      logf("config.json: %s - работаю с настройками по умолчанию", state.configError.c_str());
     }
   } else {
     state.configError = "SD-карта не найдена";
-    logf("SD-карта не найдена (CS на пине %d) — работаю без журнала и сети", PIN_SD_CS);
+    logf("SD-карта не найдена (CS на пине %d) - работаю без журнала и сети", PIN_SD_CS);
   }
   if (!cfg.deviceId.length()) cfg.deviceId = defaultDeviceId();
   logf("Устройство %s, измерение раз в %lu с", cfg.deviceId.c_str(), (unsigned long)cfg.intervalSec);

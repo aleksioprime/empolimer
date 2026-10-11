@@ -1,6 +1,6 @@
 # Продакшн в Coolify. Образы собирает .github/workflows/build.yml и пушит в GHCR,
 # теги *_IMAGE_TAG выставляет тот же workflow. Переменные окружения задаются в Coolify
-# (список — .env.example). Брокер MQTT — отдельный сервис в сети iot.
+# (список - .env.example). Брокер MQTT - отдельный сервис в сети iot.
 x-app: &app
   restart: unless-stopped
 

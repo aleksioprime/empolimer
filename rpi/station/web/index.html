@@ -103,7 +103,7 @@
   <span class="pill" id="clock"></span>
 </header>
 
-<div class="banner" id="offline">Нет связи со станцией — показаны последние данные. Страница обновится сама.</div>
+<div class="banner" id="offline">Нет связи со станцией - показаны последние данные. Страница обновится сама.</div>
 
 <main>
   <section class="card video">
@@ -120,18 +120,18 @@
     <div class="metrics">
       <div class="card metric" id="temperature">
         <div class="label">Температура</div>
-        <div class="value">—</div>
+        <div class="value">-</div>
         <div class="hint"></div>
       </div>
       <div class="card metric" id="humidity">
         <div class="label">Влажность</div>
-        <div class="value">—</div>
+        <div class="value">-</div>
         <div class="hint"></div>
       </div>
     </div>
     <div class="card metric" id="battery" hidden>
       <div class="label">Батарея</div>
-      <div class="value">—</div>
+      <div class="value">-</div>
     </div>
     <div class="updated" id="updated"></div>
 
@@ -164,7 +164,7 @@ let failures = 0;
 let streamBroken = false;
 
 const fmt = (value, digits = 1) => value === null || value === undefined
-  ? '—' : Number(value).toLocaleString('ru-RU', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+  ? '-' : Number(value).toLocaleString('ru-RU', { minimumFractionDigits: digits, maximumFractionDigits: digits });
 
 const ago = (seconds) => {
   if (seconds === null || seconds === undefined) return 'измерений ещё не было';
@@ -182,7 +182,7 @@ function pill(el, cls, text) {
 function metric(id, value, unit, level, min, max) {
   const card = $(`#${id}`);
   const info = LEVEL[level] || LEVEL.unknown;
-  card.querySelector('.value').innerHTML = value === null ? '—' : `${fmt(value)}<small>${unit}</small>`;
+  card.querySelector('.value').innerHTML = value === null ? '-' : `${fmt(value)}<small>${unit}</small>`;
   card.querySelector('.value').style.color = info.color;
   card.querySelector('.hint').textContent = `${info.text} · ${min}–${max} ${unit}`;
   card.querySelector('.hint').title = `Норма: ${min}–${max} ${unit}`;
@@ -212,10 +212,10 @@ function render() {
 
   const updated = $('#updated');
   if (known && st.sensor === false) {
-    updated.textContent = 'Датчик не отвечает — проверьте провод';
+    updated.textContent = 'Датчик не отвечает - проверьте провод';
     updated.className = 'updated stale';
   } else {
-    updated.textContent = `Обновлено: ${ago(s.reading.age)}${s.reading.stale ? ' — данные устарели' : ''}`;
+    updated.textContent = `Обновлено: ${ago(s.reading.age)}${s.reading.stale ? ' - данные устарели' : ''}`;
     updated.className = `updated${s.reading.stale ? ' stale' : ''}`;
   }
 

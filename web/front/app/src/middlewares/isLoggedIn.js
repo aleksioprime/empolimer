@@ -19,7 +19,7 @@ export const isLoggedIn = async ({ to }) => {
     }
   }
 
-  // Если access-токен так и не получен — на страницу авторизации
+  // Если access-токен так и не получен - на страницу авторизации
   if (!jwtService.getAccessToken()) {
     return { name: "login" };
   }

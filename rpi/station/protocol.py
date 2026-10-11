@@ -20,12 +20,12 @@ class Reading:
     temperature: float
     humidity: float
     battery: Optional[float] = None
-    ts: Optional[int] = None  # unix-время ESP; None — часы ESP ещё не установлены
+    ts: Optional[int] = None  # unix-время ESP; None - часы ESP ещё не установлены
 
 
 @dataclass
 class Status:
-    """Состояние ESP: связь, SD, датчик, подсветка. Неизвестные поля — в raw."""
+    """Состояние ESP: связь, SD, датчик, подсветка. Неизвестные поля - в raw."""
 
     raw: dict = field(default_factory=dict)
 
@@ -57,7 +57,7 @@ def _number(value) -> Optional[float]:
 
 
 def parse_line(line: str) -> Optional[Message]:
-    """Разобрать строку от ESP. Мусор (например, вывод загрузчика ESP8266) — None."""
+    """Разобрать строку от ESP. Мусор (например, вывод загрузчика ESP8266) - None."""
     line = line.strip()
     if not line:
         return None
@@ -97,7 +97,7 @@ def parse_line(line: str) -> Optional[Message]:
 
 
 def light_command(mode: str, brightness: Optional[int] = None) -> str:
-    """Команда подсветки: mode — on, off или auto."""
+    """Команда подсветки: mode - on, off или auto."""
     mode = mode.lower()
     if mode == "on":
         return "LIGHT ON" if brightness is None else f"LIGHT ON {max(0, min(255, int(brightness)))}"

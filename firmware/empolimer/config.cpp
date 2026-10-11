@@ -57,7 +57,7 @@ bool configLoad(const char* path, String& error) {
   }
   cfg.intervalSec = max<uint32_t>(doc["device"]["interval"] | cfg.intervalSec, 5);
 
-  // wifi — одна сеть {ssid, pass} или список; устройство перебирает их, пока не подключится.
+  // wifi - одна сеть {ssid, pass} или список; устройство перебирает их, пока не подключится.
   cfg.wifiCount = 0;
   auto addNetwork = [](JsonObjectConst net) {
     String ssid = net["ssid"] | "";
@@ -94,7 +94,7 @@ bool configLoad(const char* path, String& error) {
   cfg.apEnabled = doc["ap"]["enabled"] | cfg.apEnabled;
   cfg.apPass = doc["ap"]["pass"] | cfg.apPass.c_str();
   if (cfg.apPass.length() && cfg.apPass.length() < 8) {
-    error = "ap.pass: не меньше 8 символов (или пусто — открытая сеть)";
+    error = "ap.pass: не меньше 8 символов (или пусто - открытая сеть)";
     cfg.apPass = "empolimer";
   }
 

@@ -219,7 +219,7 @@ const canEditUser = (current, target) => {
   if (current.is_superuser) return true;
   // Админ может только обычных пользователей (не админов и не суперюзеров)
   if (current.is_admin && !target.is_admin && !target.is_superuser) return true;
-  // Все остальные — нельзя
+  // Все остальные - нельзя
   return false;
 }
 

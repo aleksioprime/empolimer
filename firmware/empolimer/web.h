@@ -7,12 +7,12 @@
 //   GET  /api/history   последние измерения из памяти (до HISTORY_SIZE)
 //   GET  /api/files     список журналов /log на SD
 //   GET  /log/<файл>    скачать журнал
-//   POST /api/light     mode=on|off|auto — если web.control в config.json
+//   POST /api/light     mode=on|off|auto - если web.control в config.json
 #pragma once
 
 #include <Arduino.h>
 
-const uint16_t HISTORY_SIZE = 240;  // при измерении раз в минуту — последние 4 часа
+const uint16_t HISTORY_SIZE = 240;  // при измерении раз в минуту - последние 4 часа
 
 void webBegin(String (*statusJson)(bool));
 void webLoop();

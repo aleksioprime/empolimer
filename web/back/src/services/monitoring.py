@@ -1,6 +1,6 @@
 """
 Оценка состояния устройства для мониторинга: на связи ли оно и что требует внимания.
-Тексты проблем — для людей: что случилось и что проверить.
+Тексты проблем - для людей: что случилось и что проверить.
 """
 
 from datetime import datetime, timedelta, timezone
@@ -23,7 +23,7 @@ def thresholds(device: Device) -> Thresholds:
 
 
 def offline_after(status: dict) -> timedelta:
-    """Без сообщений дольше трёх периодов измерений (но не меньше 5 минут) — нет связи."""
+    """Без сообщений дольше трёх периодов измерений (но не меньше 5 минут) - нет связи."""
     try:
         interval = float(status.get("interval") or 60)
     except (TypeError, ValueError):
@@ -55,7 +55,7 @@ def evaluate(device: Device, last_data: Optional[DeviceData],
              now: Optional[datetime] = None) -> tuple[bool, str, list[DeviceProblem]]:
     """
     Возвращает (online, state, problems).
-    state: new — данных ещё не было, offline — нет связи, warning — есть замечания, ok — всё в порядке.
+    state: new - данных ещё не было, offline - нет связи, warning - есть замечания, ok - всё в порядке.
     """
     now = now or datetime.now(timezone.utc)
     status = device.status or {}
@@ -76,7 +76,7 @@ def evaluate(device: Device, last_data: Optional[DeviceData],
 
     if status.get("sensor") is False:
         problems.append(DeviceProblem(code="sensor", level="error",
-                                      text="Датчик температуры и влажности не отвечает — проверьте провод"))
+                                      text="Датчик температуры и влажности не отвечает - проверьте провод"))
     if status.get("sd") is False:
         problems.append(DeviceProblem(code="sd", level="warning",
                                       text="SD-карта не найдена: при обрыве связи данные будут потеряны"))

@@ -1,13 +1,13 @@
 """Веб-доступ к станции: страница, показания в JSON, видео с камеры и управление подсветкой.
 
-Только стандартная библиотека — на Pi Zero не нужно ничего доустанавливать.
+Только стандартная библиотека - на Pi Zero не нужно ничего доустанавливать.
 
   GET  /               страница станции (station/web/index.html)
   GET  /api/state      показания, состояние ESP и камеры
   GET  /api/ping       проверка, что сервер отвечает
   GET  /stream.mjpg    видео (MJPEG); кадры сжимаются, только пока кто-то смотрит
   GET  /snapshot.jpg   один кадр
-  POST /api/light      {"mode": "on" | "off" | "auto"} — если разрешено web_control
+  POST /api/light      {"mode": "on" | "off" | "auto"} - если разрешено web_control
 """
 
 from __future__ import annotations
@@ -40,7 +40,7 @@ def local_addresses(port: int) -> list[str]:
     urls = []
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as probe:
-            probe.connect(("10.255.255.255", 1))  # пакет не отправляется — только выбор интерфейса
+            probe.connect(("10.255.255.255", 1))  # пакет не отправляется - только выбор интерфейса
             address = probe.getsockname()[0]
         if not address.startswith("127."):
             urls.append(f"http://{address}:{port}")
@@ -54,7 +54,7 @@ class _Handler(BaseHTTPRequestHandler):
     server: "_Server"
     protocol_version = "HTTP/1.1"
 
-    def log_message(self, format, *args):  # noqa: A002 — журнал запросов не нужен
+    def log_message(self, format, *args):  # noqa: A002 - журнал запросов не нужен
         pass
 
     def _track(self) -> None:
@@ -130,7 +130,7 @@ class _Handler(BaseHTTPRequestHandler):
         try:
             while not web.stopping:
                 if not web.state.wait_frame(last_id, timeout=2):
-                    continue  # камера молчит — держим соединение, браузер покажет последний кадр
+                    continue  # камера молчит - держим соединение, браузер покажет последний кадр
                 started = time.monotonic()
                 last_id, jpeg = web.state.jpeg()
                 if jpeg is None:
@@ -154,7 +154,7 @@ class _Server(ThreadingHTTPServer):
 
 
 class WebServer:
-    """HTTP-сервер в фоновом потоке. Если порт занят — пробует снова, не мешая станции."""
+    """HTTP-сервер в фоновом потоке. Если порт занят - пробует снова, не мешая станции."""
 
     def __init__(self, state: StationState, port: int, send_command: Callable[[str], None], stream_fps: int = 5):
         self.state = state
@@ -204,11 +204,11 @@ class WebServer:
             return
 
     def _self_check(self) -> None:
-        """Раз в SELF_CHECK_S секунд запрашивает /api/ping у самого себя — так видно, что сервер отвечает.
+        """Раз в SELF_CHECK_S секунд запрашивает /api/ping у самого себя - так видно, что сервер отвечает.
         Пока сервер не ответил ни разу (только запускается), проверка повторяется каждую секунду."""
         request = urllib.request.Request(f"http://127.0.0.1:{self.port}/api/ping", headers={SELF_CHECK_HEADER: "1"})
         while not self.stopping:
-            if self._httpd is None:  # сервер ещё не занял порт — проверять рано
+            if self._httpd is None:  # сервер ещё не занял порт - проверять рано
                 time.sleep(0.2)
                 continue
             try:

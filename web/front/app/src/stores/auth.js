@@ -75,7 +75,7 @@ export const useAuthStore = defineStore("auth", {
         resources.auth.setAuthHeader(token);
         return true;
       }
-      // false — сессия закончилась; null — сервер недоступен, сессию сохраняем
+      // false - сессия закончилась; null - сервер недоступен, сессию сохраняем
       if (token === false) await this.logout();
       return token;
     },
@@ -110,7 +110,7 @@ export const useAuthStore = defineStore("auth", {
         this.user = result.data;
         return true;
       }
-      // Сервер недоступен — не выходим: данные пользователя подгрузятся при следующей навигации
+      // Сервер недоступен - не выходим: данные пользователя подгрузятся при следующей навигации
       if (result.data?.response?.status === 401) {
         jwtService.destroyTokens();
         resources.auth.setAuthHeader("");
@@ -124,7 +124,7 @@ export const useAuthStore = defineStore("auth", {
      * Удаляет токены и очищает заголовок авторизации.
      */
     async logout() {
-      // Отзываем refresh-токен на сервере, но выходим в любом случае — даже без связи.
+      // Отзываем refresh-токен на сервере, но выходим в любом случае - даже без связи.
       await resources.auth.logout({
         access_token: jwtService.getAccessToken(),
         refresh_token: jwtService.getRefreshToken(),

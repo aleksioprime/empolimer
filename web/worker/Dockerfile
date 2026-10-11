@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-# Живой — если файл heartbeat обновлялся за последние 90 секунд (есть связь с брокером).
+# Живой - если файл heartbeat обновлялся за последние 90 секунд (есть связь с брокером).
 HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
   CMD python -c "import os,sys,time; sys.exit(time.time() - os.path.getmtime('/tmp/worker-alive') > 90)"
 

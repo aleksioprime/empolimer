@@ -5,12 +5,12 @@
 
 struct State {
   bool sdReady = false;
-  String configError;          // пусто — config.json прочитан без ошибок
+  String configError;          // пусто - config.json прочитан без ошибок
   bool sensorOk = false;
   float temperature = NAN;
   float humidity = NAN;
   float battery = NAN;
-  uint32_t lastMeasureMs = 0;  // millis() последнего удачного измерения; 0 — ещё не было
+  uint32_t lastMeasureMs = 0;  // millis() последнего удачного измерения; 0 - ещё не было
   uint32_t queued = 0;         // измерений ждут отправки на сервер
 };
 

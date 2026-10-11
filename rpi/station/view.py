@@ -1,4 +1,4 @@
-"""Как показывать значения: оценка относительно нормы и «сколько прошло». Без Qt — для тестов."""
+"""Как показывать значения: оценка относительно нормы и «сколько прошло». Без Qt - для тестов."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from typing import Optional
 
 
 def level(value: Optional[float], low: float, high: float) -> str:
-    """unknown — нет значения, ok — в норме, low/high — ниже или выше нормы."""
+    """unknown - нет значения, ok - в норме, low/high - ниже или выше нормы."""
     if value is None:
         return "unknown"
     if value < low:

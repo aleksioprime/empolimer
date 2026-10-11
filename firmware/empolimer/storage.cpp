@@ -6,7 +6,7 @@
 #include "board.h"
 #include "state.h"
 
-// На ESP32 FILE_WRITE перезаписывает файл, на ESP8266 — дописывает в конец.
+// На ESP32 FILE_WRITE перезаписывает файл, на ESP8266 - дописывает в конец.
 #if defined(ESP32)
   #define SD_APPEND FILE_APPEND
 #else
@@ -101,7 +101,7 @@ void queuePop() {
 
   queueCount--;
   if (done || queueCount == 0) {
-    // Всё отправлено — очищаем очередь, чтобы файл не рос.
+    // Всё отправлено - очищаем очередь, чтобы файл не рос.
     SD.remove(QUEUE_PATH);
     queueOffset = 0;
     queueCount = 0;

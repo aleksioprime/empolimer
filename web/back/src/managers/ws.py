@@ -16,7 +16,7 @@ class ConnectionManager:
 
     def __init__(self):
         self.connections: set[WebSocket] = set()
-        self.wake = asyncio.Event()  # новый клиент — разослать состояние сразу, не дожидаясь цикла
+        self.wake = asyncio.Event()  # новый клиент - разослать состояние сразу, не дожидаясь цикла
 
     async def connect(self, websocket: WebSocket):
         await websocket.accept()

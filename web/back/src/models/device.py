@@ -9,7 +9,7 @@ from src.db.postgres import Base
 
 class Device(Base):
     """
-    Модель устройства. name — идентификатор из config.json на SD-карте (device.id),
+    Модель устройства. name - идентификатор из config.json на SD-карте (device.id),
     он же второй уровень MQTT-топика: empolimer/<name>/data
     """
     __tablename__ = 'devices'
@@ -23,7 +23,7 @@ class Device(Base):
     last_seen = Column(DateTime(timezone=True), nullable=True)
     status = Column(JSONB, nullable=True)
 
-    # Границы нормы; пусто — значения по умолчанию из настроек сервера
+    # Границы нормы; пусто - значения по умолчанию из настроек сервера
     temp_min = Column(Float, nullable=True)
     temp_max = Column(Float, nullable=True)
     hum_min = Column(Float, nullable=True)
@@ -38,7 +38,7 @@ class Device(Base):
 class DeviceData(Base):
     __tablename__ = 'device_data'
     __table_args__ = (
-        # Устройство повторно отправляет очередь после обрыва связи — повторы отбрасываются.
+        # Устройство повторно отправляет очередь после обрыва связи - повторы отбрасываются.
         Index('ix_device_data_device_timestamp', 'device_id', 'timestamp', unique=True),
     )
 

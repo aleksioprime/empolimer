@@ -28,7 +28,7 @@ def upgrade() -> None:
     op.add_column('devices', sa.Column('hum_min', sa.Float(), nullable=True))
     op.add_column('devices', sa.Column('hum_max', sa.Float(), nullable=True))
 
-    # Время последнего контакта — по уже накопленным данным.
+    # Время последнего контакта - по уже накопленным данным.
     op.execute("""
         UPDATE devices d SET last_seen = x.ts
         FROM (SELECT device_id, max(timestamp) AS ts FROM device_data GROUP BY device_id) x

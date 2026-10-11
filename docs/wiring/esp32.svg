@@ -95,7 +95,7 @@
 <line x1="40" y1="650" x2="70" y2="650" stroke="#ad1457" stroke-width="4"/>
 <line x1="40" y1="670" x2="70" y2="670" stroke="#795548" stroke-width="4"/>
 <text x="30" y="40" font-size="22" text-anchor="start" font-weight="bold" fill="#24292f">Подключение: ESP32 DevKit V1 (30 пинов)</text>
-<text x="30" y="62" font-size="13" text-anchor="start" font-weight="normal" fill="#57606a">Вид сверху: антенна вверху, USB внизу. У плат на 38 пинов порядок другой — подключайте по подписям (D4 = GPIO4), а не по месту на плате.</text>
+<text x="30" y="62" font-size="13" text-anchor="start" font-weight="normal" fill="#57606a">Вид сверху: антенна вверху, USB внизу. У плат на 38 пинов порядок другой - подключайте по подписям (D4 = GPIO4), а не по месту на плате.</text>
 <rect x="480" y="150" width="200" height="530" rx="8" fill="#263238" stroke="#11171a" stroke-width="2"/>
 <rect x="510" y="158" width="140" height="30" rx="3" fill="#cfd8dc" stroke="#90a4ae" stroke-width="1.5"/>
 <text x="580.0" y="178" font-size="11" text-anchor="middle" font-weight="normal" fill="#455a64">антенна</text>
@@ -165,10 +165,10 @@
 <text x="652" y="606" font-size="12" text-anchor="end" font-weight="bold" fill="#ffffff">3V3</text>
 <rect x="720" y="84" width="500" height="106" rx="8" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5"/>
 <text x="734" y="106" font-size="13" text-anchor="start" font-weight="bold" fill="#7a5300">Перед включением</text>
-<text x="734" y="128" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">1. Лента — от отдельного блока 5 В; GND блока соединён с GND платы.</text>
-<text x="734" y="146" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">2. Резистор 330 Ом — в разрыв провода D13 → DIN ленты.</text>
-<text x="734" y="164" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">3. Модуль SD со стабилизатором — VCC к VIN (5 В), не к 3V3.</text>
-<text x="734" y="182" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">4. Батарея: на D34 не больше 3,3 В — только через делитель.</text>
+<text x="734" y="128" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">1. Лента - от отдельного блока 5 В; GND блока соединён с GND платы.</text>
+<text x="734" y="146" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">2. Резистор 330 Ом - в разрыв провода D13 → DIN ленты.</text>
+<text x="734" y="164" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">3. Модуль SD со стабилизатором - VCC к VIN (5 В), не к 3V3.</text>
+<text x="734" y="182" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">4. Батарея: на D34 не больше 3,3 В - только через делитель.</text>
 <rect x="960" y="462" width="190" height="140" rx="8" fill="#e3f2fd" stroke="#57606a" stroke-width="1.8"/>
 <text x="1055.0" y="484" font-size="14" text-anchor="middle" font-weight="bold" fill="#24292f">Датчик DHT11 / DHT22</text>
 <text x="1055.0" y="502" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">модуль на плате, 3 вывода;</text>
@@ -212,7 +212,7 @@
 <rect x="235" y="939.75" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
 <rect x="440" y="870" width="330" height="90" rx="8" fill="#e8f5e9" stroke="#57606a" stroke-width="1.8"/>
 <text x="605.0" y="914" font-size="14" text-anchor="middle" font-weight="bold" fill="#24292f">Лента WS2812B</text>
-<text x="605.0" y="932" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">к началу ленты: вход DIN, стрелки — от вас</text>
+<text x="605.0" y="932" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">к началу ленты: вход DIN, стрелки - от вас</text>
 <text x="495.0" y="886" font-size="12" text-anchor="middle" font-weight="bold" fill="#24292f">+5V</text>
 <rect x="490.0" y="865" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
 <text x="605.0" y="886" font-size="12" text-anchor="middle" font-weight="bold" fill="#24292f">DIN</text>
@@ -223,7 +223,7 @@
 <text x="193.7" y="989" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#212121">к GND платы</text>
 <rect x="238.0" y="763.0" width="14" height="34" rx="3" fill="#fff3e0" stroke="#8d6e63" stroke-width="1.5"/>
 <text x="257" y="784" font-size="12" text-anchor="start" font-weight="normal" fill="#5d4037">330 Ом</text>
-<text x="54" y="257" font-size="13" text-anchor="start" font-weight="bold" fill="#24292f">Батарея — необязательно</text>
+<text x="54" y="257" font-size="13" text-anchor="start" font-weight="bold" fill="#24292f">Батарея - необязательно</text>
 <text x="54" y="275" font-size="11" text-anchor="start" font-weight="normal" fill="#57606a">battery.enabled = true</text>
 <text x="54" y="314" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">Батарея +</text>
 <text x="54" y="379" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">Батарея −</text>
@@ -235,7 +235,7 @@
 <text x="316.5" y="379" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#212121">→ GND</text>
 <text x="40" y="425" font-size="12" text-anchor="start" font-weight="normal" fill="#5d4037">в config.json: divider = (R1 + R2) / R2 = 2,5</text>
 <rect x="460.0" y="710" width="240" height="54" rx="8" fill="#fce4ec" stroke="#ad1457" stroke-width="1.5"/>
-<text x="580.0" y="734" font-size="13" text-anchor="middle" font-weight="bold" fill="#24292f">Raspberry Pi — порт USB</text>
+<text x="580.0" y="734" font-size="13" text-anchor="middle" font-weight="bold" fill="#24292f">Raspberry Pi - порт USB</text>
 <text x="580.0" y="752" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">кабель USB с передачей данных</text>
 <text x="40" y="470" font-size="13" text-anchor="start" font-weight="bold" fill="#24292f">Цвета проводов</text>
 <text x="78" y="494" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">+5 В</text>
@@ -250,6 +250,6 @@
 <text x="78" y="674" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">батарея</text>
 <text x="40" y="700" font-size="12" text-anchor="start" font-weight="normal" fill="#57606a">Метка «→ VIN (5 В)»: провод</text>
 <text x="40" y="716" font-size="12" text-anchor="start" font-weight="normal" fill="#57606a">к выводу с той же подписью.</text>
-<text x="40" y="732" font-size="12" text-anchor="start" font-weight="normal" fill="#57606a">Все GND платы соединены —</text>
+<text x="40" y="732" font-size="12" text-anchor="start" font-weight="normal" fill="#57606a">Все GND платы соединены -</text>
 <text x="40" y="748" font-size="12" text-anchor="start" font-weight="normal" fill="#57606a">подходит любой.</text>
 </svg>

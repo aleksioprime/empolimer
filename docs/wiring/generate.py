@@ -15,7 +15,7 @@ from pathlib import Path
 
 OUT = Path(__file__).resolve().parent
 
-# Цвета проводов — как советуем брать провода при сборке.
+# Цвета проводов - как советуем брать провода при сборке.
 C5V, C3V3, CGND = "#e65100", "#d32f2f", "#212121"
 CDHT, CLED, CSCK, CMOSI, CMISO, CCS, CBAT, CUSB = (
     "#f9a825", "#2e7d32", "#1565c0", "#6a1b9a", "#00838f", "#ad1457", "#795548", "#757575")
@@ -32,7 +32,7 @@ PIN_STEP = 28
 class Svg:
     def __init__(self, width: int, height: int):
         self.width, self.height = width, height
-        self.back: list[str] = []   # провода — под модулями
+        self.back: list[str] = []   # провода - под модулями
         self.front: list[str] = []
 
     def text(self, x, y, s, size=13, anchor="start", weight="normal", color="#24292f", layer=None):
@@ -76,7 +76,7 @@ class Svg:
 
 @dataclass
 class Board:
-    """Плата с двумя рядами пинов. left/right — подписи сверху вниз."""
+    """Плата с двумя рядами пинов. left/right - подписи сверху вниз."""
 
     name: str
     left: list[str]
@@ -91,8 +91,8 @@ class Board:
         return self.y + 60
 
     def pin(self, label: str, side: str = "") -> tuple[int, int]:
-        """Координаты пина; side — 'L' или 'R', если подпись встречается на обеих сторонах;
-        для повторяющихся подписей можно указать 'GND#2' — второй сверху."""
+        """Координаты пина; side - 'L' или 'R', если подпись встречается на обеих сторонах;
+        для повторяющихся подписей можно указать 'GND#2' - второй сверху."""
         base, _, nth = label.partition("#")
         nth = int(nth or 1)
         for column, names, x in (("L", self.left, self.x + 16), ("R", self.right, self.x + self.width - 16)):
@@ -108,7 +108,7 @@ class Board:
         rows = max(len(self.left), len(self.right))
         height = 60 + rows * PIN_STEP + 50
         svg.rect(self.x, self.y, self.width, height, fill="#263238", stroke="#11171a", rx=8, width=2)
-        # антенна и USB — для ориентации платы
+        # антенна и USB - для ориентации платы
         svg.rect(self.x + 30, self.y + 8, self.width - 60, 30, fill="#cfd8dc", stroke="#90a4ae", rx=3)
         svg.text(self.x + self.width / 2, self.y + 28, "антенна", size=11, anchor="middle", color="#455a64")
         usb_y = self.y + height - 26
@@ -137,7 +137,7 @@ class Module:
     def __init__(self, svg: Svg, x, y, w, h, title, subtitle, pins, side="left", fill="#f6f8fa"):
         self.pins = {}
         svg.rect(x, y, w, h, fill=fill, stroke="#57606a", rx=8, width=1.8)
-        shift = 22 if side == "top" else 0  # подписи выводов сверху — название ниже них
+        shift = 22 if side == "top" else 0  # подписи выводов сверху - название ниже них
         svg.text(x + w / 2, y + 22 + shift, title, size=14, anchor="middle", weight="bold")
         for i, line in enumerate(subtitle.split("\n") if subtitle else []):
             svg.text(x + w / 2, y + 40 + shift + i * 15, line, size=11, anchor="middle", color="#57606a")
@@ -188,7 +188,7 @@ def notes(svg: Svg, x, y, lines, width=520, title="Проверьте перед
 # --- общие элементы ---
 
 def flag(svg: Svg, x, y, text, color, side="right"):
-    """Метка цепи питания на выводе: «→ VIN (5 В)». Провод по метке — к выводу с той же подписью."""
+    """Метка цепи питания на выводе: «→ VIN (5 В)». Провод по метке - к выводу с той же подписью."""
     length = 26
     w = 8 + 6.6 * len(text)
     if side == "right":
@@ -240,7 +240,7 @@ def sd_module(svg, x, y):
 
 def power_section(svg, x, y, strip_note):
     """Блок питания и лента: отдельная цепь 5 В, общий GND с платой.
-    Выводы ленты сверху: DIN подходит сверху, +5V — слева, GND — в обход справа, без пересечений."""
+    Выводы ленты сверху: DIN подходит сверху, +5V - слева, GND - в обход справа, без пересечений."""
     psu = Module(svg, x, y, 200, 110, "Блок питания 5 В", "≥ 2 А на 30 светодиодов",
                  ["+5V", "GND"], side="right", fill="#fff3e0")
     strip = Module(svg, x + 400, y + 20, 330, 90, "Лента WS2812B", strip_note,
@@ -256,7 +256,7 @@ def power_section(svg, x, y, strip_note):
     return psu, strip
 def rpi_box(svg, x, y):
     svg.rect(x, y, 240, 54, fill="#fce4ec", stroke="#ad1457", rx=8)
-    svg.text(x + 120, y + 24, "Raspberry Pi — порт USB", size=13, anchor="middle", weight="bold")
+    svg.text(x + 120, y + 24, "Raspberry Pi - порт USB", size=13, anchor="middle", weight="bold")
     svg.text(x + 120, y + 42, "кабель USB с передачей данных", size=11, anchor="middle", color="#57606a")
     return x + 120, y
 
@@ -265,7 +265,7 @@ def battery_box(svg, x, y, adc_pin, gnd_pin, divider_text, r1="15 кОм"):
     """Делитель напряжения батареи: Бат+ → R1 → узел → R2 → GND; узел → вход АЦП."""
     svg.rect(x, y, 300, 170, fill="#efebe9", stroke="#795548", rx=8, dash="6 4", layer=svg.back)
     svg.back.insert(0, svg.back.pop())  # рамка под проводами
-    svg.text(x + 14, y + 22, "Батарея — необязательно", size=13, weight="bold")
+    svg.text(x + 14, y + 22, "Батарея - необязательно", size=13, weight="bold")
     svg.text(x + 14, y + 40, "battery.enabled = true", size=11, color="#57606a")
     node_x = x + 230
     plus_y, minus_y = y + 75, y + 140
@@ -288,7 +288,7 @@ def battery_box(svg, x, y, adc_pin, gnd_pin, divider_text, r1="15 кОм"):
 
 
 def devkit(name, title, subtitle, board, pins, file_name, notes_lines, sd_y=470, dht_y=230):
-    """Общая раскладка для NodeMCU и ESP32 DevKit. pins — пины платы для каждой роли."""
+    """Общая раскладка для NodeMCU и ESP32 DevKit. pins - пины платы для каждой роли."""
     svg = Svg(1240, 1010)
     header(svg, title, subtitle)
     for role, (label, side) in pins.items():
@@ -300,7 +300,7 @@ def devkit(name, title, subtitle, board, pins, file_name, notes_lines, sd_y=470,
 
     notes(svg, 720, 84, notes_lines, width=500, title="Перед включением")
 
-    # Датчик: данные — проводом, питание 3,3 В и GND — проводами к соседним пинам
+    # Датчик: данные - проводом, питание 3,3 В и GND - проводами к соседним пинам
     dht = dht_module(svg, 960, dht_y)
     route(svg, [(p["dht"], dht["S (DATA)"], CDHT), (p["dht_vcc"], dht["+ (VCC)"], C3V3),
                 (p["dht_gnd"], dht["− (GND)"], CGND)], [880, 900, 920], dht["S (DATA)"][0])
@@ -320,7 +320,7 @@ def devkit(name, title, subtitle, board, pins, file_name, notes_lines, sd_y=470,
         flag(svg, *p["psu_gnd"], "→ GND блока питания", CGND, side=side_of("psu_gnd"))
 
     # Лента: данные через 330 Ом
-    psu, strip = power_section(svg, 40, 850, "к началу ленты: вход DIN, стрелки — от вас")
+    psu, strip = power_section(svg, 40, 850, "к началу ленты: вход DIN, стрелки - от вас")
     lx, ly = p["led"]
     lane = right + 70 if pins["led"][1] == "R" else 245
     out_x = 1215 if pins["led"][1] == "R" else 420
@@ -342,7 +342,7 @@ def devkit(name, title, subtitle, board, pins, file_name, notes_lines, sd_y=470,
 
     legend(svg, 40, 470)
     for i, line in enumerate(["Метка «→ VIN (5 В)»: провод", "к выводу с той же подписью.",
-                              "Все GND платы соединены —", "подходит любой."]):
+                              "Все GND платы соединены -", "подходит любой."]):
         svg.text(40, 700 + i * 16, line, size=12, color="#57606a")
     svg.save(file_name, title)
 
@@ -354,17 +354,17 @@ def nodemcu():
                   right=["D0", "D1", "D2", "D3", "D4", "3V3", "GND", "D5", "D6", "D7", "D8", "RX", "TX", "GND", "3V3"])
     devkit("v2 / v3", "Подключение: NodeMCU ESP8266 (ESP-12E)",
            "Вид сверху: антенна вверху, USB внизу. Подписи пинов совпадают у NodeMCU v2 (Amica) и v3 (LoLin): "
-           "у v3 второй и третий слева — G и VU.",
+           "у v3 второй и третий слева - G и VU.",
            board,
            {"dht": ("D4", "R"), "dht_vcc": ("3V3#1", "R"), "dht_gnd": ("GND#1", "R"),
             "sck": ("D5", "R"), "miso": ("D6", "R"), "mosi": ("D7", "R"), "cs": ("D8", "R"),
             "sd_gnd": ("GND#2", "R"), "vin": ("VIN", "L"), "led": ("D2", "R"),
             "psu_gnd": ("GND#2", "L"), "bat": ("A0", "L"), "bat_gnd": ("GND#1", "L")},
            "nodemcu.svg",
-           ["1. Лента — от отдельного блока 5 В; GND блока соединён с GND платы.",
-            "2. Резистор 330 Ом — в разрыв провода D2 → DIN ленты.",
-            "3. Модуль SD со стабилизатором — VCC к VIN (5 В), не к 3V3.",
-            "4. Батарея: на A0 не больше 3,3 В — только через делитель."])
+           ["1. Лента - от отдельного блока 5 В; GND блока соединён с GND платы.",
+            "2. Резистор 330 Ом - в разрыв провода D2 → DIN ленты.",
+            "3. Модуль SD со стабилизатором - VCC к VIN (5 В), не к 3V3.",
+            "4. Батарея: на A0 не больше 3,3 В - только через делитель."])
 
 
 def esp32():
@@ -374,7 +374,7 @@ def esp32():
                   right=["D23", "D22", "TX0", "RX0", "D21", "D19", "D18", "D5", "TX2", "RX2", "D4", "D2", "D15",
                          "GND", "3V3"])
     devkit("DevKit V1 · 30 pin", "Подключение: ESP32 DevKit V1 (30 пинов)",
-           "Вид сверху: антенна вверху, USB внизу. У плат на 38 пинов порядок другой — подключайте по подписям "
+           "Вид сверху: антенна вверху, USB внизу. У плат на 38 пинов порядок другой - подключайте по подписям "
            "(D4 = GPIO4), а не по месту на плате.",
            board,
            {"dht": ("D4", "R"), "dht_vcc": ("3V3", "R"), "dht_gnd": ("GND", "R"),
@@ -382,10 +382,10 @@ def esp32():
             "sd_gnd": ("GND", "L"), "vin": ("VIN", "L"), "led": ("D13", "L"),
             "psu_gnd": ("GND", "L"), "bat": ("D34", "L"), "bat_gnd": ("", "")},
            "esp32.svg",
-           ["1. Лента — от отдельного блока 5 В; GND блока соединён с GND платы.",
-            "2. Резистор 330 Ом — в разрыв провода D13 → DIN ленты.",
-            "3. Модуль SD со стабилизатором — VCC к VIN (5 В), не к 3V3.",
-            "4. Батарея: на D34 не больше 3,3 В — только через делитель."],
+           ["1. Лента - от отдельного блока 5 В; GND блока соединён с GND платы.",
+            "2. Резистор 330 Ом - в разрыв провода D13 → DIN ленты.",
+            "3. Модуль SD со стабилизатором - VCC к VIN (5 В), не к 3V3.",
+            "4. Батарея: на D34 не больше 3,3 В - только через делитель."],
            sd_y=195, dht_y=462)
 
 

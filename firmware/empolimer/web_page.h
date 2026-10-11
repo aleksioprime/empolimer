@@ -51,12 +51,12 @@ td:last-child{text-align:right;color:var(--muted)}a{color:var(--low)}
   <span class="pill" id="sensor"><span class="dot"></span><span>Датчик</span></span>
   <span class="pill" id="clock"></span>
 </header>
-<div class="banner" id="offline" hidden>Нет связи с устройством — показаны последние данные.</div>
+<div class="banner" id="offline" hidden>Нет связи с устройством - показаны последние данные.</div>
 <main>
   <section class="wide">
     <div class="metrics">
-      <div class="card metric" id="temp"><div class="label">Температура</div><div class="value">—</div><div class="hint"></div></div>
-      <div class="card metric" id="hum"><div class="label">Влажность</div><div class="value">—</div><div class="hint"></div></div>
+      <div class="card metric" id="temp"><div class="label">Температура</div><div class="value">-</div><div class="hint"></div></div>
+      <div class="card metric" id="hum"><div class="label">Влажность</div><div class="value">-</div><div class="hint"></div></div>
     </div>
     <div class="updated" id="updated"></div>
   </section>
@@ -90,13 +90,13 @@ td:last-child{text-align:right;color:var(--muted)}a{color:var(--low)}
 const $=s=>document.querySelector(s);
 const LV={ok:['var(--ok)','в норме'],low:['var(--low)','ниже нормы'],high:['var(--high)','выше нормы']};
 let st=null,fails=0;
-const fmt=(v,d=1)=>v==null?'—':Number(v).toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmt=(v,d=1)=>v==null?'-':Number(v).toLocaleString('ru-RU',{minimumFractionDigits:d,maximumFractionDigits:d});
 const ago=s=>s==null?'измерений ещё не было':s<5?'только что':s<60?s+' с назад':s<3600?Math.floor(s/60)+' мин назад':Math.floor(s/3600)+' ч '+Math.floor(s%3600/60)+' мин назад';
 const level=(v,a,b)=>v==null?null:v<a?'low':v>b?'high':'ok';
 const up=s=>{const d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);return (d?d+' д ':'')+(h?h+' ч ':'')+m+' мин'};
 function metric(id,v,unit,a,b){
   const c=$('#'+id),l=level(v,a,b),[col,txt]=LV[l]||['var(--muted)','нет данных'];
-  c.querySelector('.value').innerHTML=v==null?'—':fmt(v)+'<small>'+unit+'</small>';
+  c.querySelector('.value').innerHTML=v==null?'-':fmt(v)+'<small>'+unit+'</small>';
   c.querySelector('.value').style.color=col;
   c.querySelector('.hint').textContent=txt+' · '+a+'–'+b+' '+unit;
   c.querySelector('.hint').style.color=col;
@@ -112,7 +112,7 @@ function render(){
   metric('temp',r.temp,'°C',n.temp_min,n.temp_max);
   metric('hum',r.hum,'%',n.hum_min,n.hum_max);
   const stale=r.age!=null&&r.age>Math.max(3*s.interval,120);
-  $('#updated').textContent='Обновлено: '+ago(r.age)+(stale?' — данные устарели':'');
+  $('#updated').textContent='Обновлено: '+ago(r.age)+(stale?' - данные устарели':'');
   $('#updated').className='updated'+(stale?' stale':'');
   $('#modules').innerHTML=[
     item('Wi-Fi',s.wifi,s.wifi?s.rssi+' дБм':''),item('Сервер',s.mqtt,s.queue?'очередь '+s.queue:''),
@@ -122,7 +122,7 @@ function render(){
     b.classList.toggle('active',m=='auto'?s.light_auto:!s.light_auto&&(m=='on')==s.light);b.disabled=!s.control});
   $('#light-note').textContent=s.control?'':'Управление со страницы выключено в config.json (web.control)';
   $('#info').innerHTML=[['Прошивка',s.fw+' · '+s.board],['Работает',up(s.uptime)],['Измерение','раз в '+s.interval+' с'],
-    ['Адрес',s.wifi?s.ip:'—'],r.bat!=null?['Батарея',fmt(r.bat,2)+' В']:null,s.config_error?['Ошибка config.json',s.config_error]:null]
+    ['Адрес',s.wifi?s.ip:'-'],r.bat!=null?['Батарея',fmt(r.bat,2)+' В']:null,s.config_error?['Ошибка config.json',s.config_error]:null]
     .filter(Boolean).map(([a,b])=>'<tr><td>'+a+'</td><td>'+b+'</td></tr>').join('');
   $('#clock').textContent=s.now?new Date(s.now*1000).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}):'часы не установлены';
 }

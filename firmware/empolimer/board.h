@@ -20,7 +20,7 @@
   #endif
   #define ADC_MAX 4095
 #elif defined(ESP8266)
-  // NodeMCU v2 / v3 (модуль ESP-12E); номера GPIO, в скобках — подписи на плате.
+  // NodeMCU v2 / v3 (модуль ESP-12E); номера GPIO, в скобках - подписи на плате.
   #define BOARD_NAME "esp8266"
   #ifndef PIN_DHT
     #define PIN_DHT 2        // GPIO2 (D4)

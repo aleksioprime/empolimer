@@ -27,7 +27,7 @@ export class ApiService {
         // Проверка срока действия токена
         const decodedToken = jwtDecode(token);
         if (decodedToken.exp < Date.now() / 1000) {
-          // Токен истёк — обновляем. Сессия закончилась — на вход; сервер недоступен — запрос
+          // Токен истёк - обновляем. Сессия закончилась - на вход; сервер недоступен - запрос
           // просто не удастся, а сессия сохранится до восстановления связи.
           const refreshed = await handleTokenRefresh();
           if (refreshed === false) {
@@ -55,7 +55,7 @@ export class ApiService {
       response => response,
       (error) => {
         const { config, response } = error;
-        // Токен недействителен — на страницу входа. 403 («недостаточно прав») сессию не завершает.
+        // Токен недействителен - на страницу входа. 403 («недостаточно прав») сессию не завершает.
         if (response && response.status === 401 && !config._retry) {
           logger.error("Ошибка авторизации запроса");
           config._retry = true;

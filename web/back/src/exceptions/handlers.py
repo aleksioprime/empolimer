@@ -33,7 +33,7 @@ def register_exception_handlers(app: FastAPI):
     # Обработчик общего исключения
     @app.exception_handler(Exception)
     async def general_exception_handler(request: Request, exc: Exception):
-        # Подробности — в журнал сервера, клиенту — без внутренних деталей.
+        # Подробности - в журнал сервера, клиенту - без внутренних деталей.
         logger.exception("Необработанная ошибка: %s %s", request.method, request.url.path)
         return JSONResponse(
             status_code=500,
