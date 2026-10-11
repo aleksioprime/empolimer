@@ -104,18 +104,16 @@ class Board:
                 return x, self.top + hits[nth - 1] * PIN_STEP
         raise KeyError(label)
 
-    def draw(self, svg: Svg, subtitle: str, usb: bool = True):
+    def draw(self, svg: Svg, subtitle: str):
         rows = max(len(self.left), len(self.right))
         height = 60 + rows * PIN_STEP + 50
         svg.rect(self.x, self.y, self.width, height, fill="#263238", stroke="#11171a", rx=8, width=2)
         # антенна и USB — для ориентации платы
         svg.rect(self.x + 30, self.y + 8, self.width - 60, 30, fill="#cfd8dc", stroke="#90a4ae", rx=3)
         svg.text(self.x + self.width / 2, self.y + 28, "антенна", size=11, anchor="middle", color="#455a64")
-        if usb:
-            usb_y = self.y + height - 26
-            svg.rect(self.x + self.width / 2 - 26, usb_y, 52, 34, fill="#b0bec5", stroke="#78909c", rx=3)
-            svg.text(self.x + self.width / 2, usb_y + 22, "USB", size=12, anchor="middle", weight="bold",
-                     color="#37474f")
+        usb_y = self.y + height - 26
+        svg.rect(self.x + self.width / 2 - 26, usb_y, 52, 34, fill="#b0bec5", stroke="#78909c", rx=3)
+        svg.text(self.x + self.width / 2, usb_y + 22, "USB", size=12, anchor="middle", weight="bold", color="#37474f")
         svg.text(self.x + self.width / 2, self.y + height / 2 - 8, self.name, size=15, anchor="middle",
                  weight="bold", color="#eceff1")
         svg.text(self.x + self.width / 2, self.y + height / 2 + 12, subtitle, size=11, anchor="middle",
@@ -240,7 +238,7 @@ def sd_module(svg, x, y):
                   ["GND", "VCC", "MISO", "MOSI", "SCK", "CS"], side="left", fill="#ede7f6")
 
 
-def power_section(svg, x, y, strip_note, din_flag=None):
+def power_section(svg, x, y, strip_note):
     """Блок питания и лента: отдельная цепь 5 В, общий GND с платой.
     Выводы ленты сверху: DIN подходит сверху, +5V — слева, GND — в обход справа, без пересечений."""
     psu = Module(svg, x, y, 200, 110, "Блок питания 5 В", "≥ 2 А на 30 светодиодов",
@@ -255,10 +253,6 @@ def power_section(svg, x, y, strip_note, din_flag=None):
     svg.wire([(pxg, pyg), (pxg + 20, pyg), (pxg + 20, bottom), (right, bottom), (right, syg - 30), (sxg, syg - 30),
               (sxg, syg)], CGND)
     flag(svg, pxg + 20, bottom, "к GND платы", CGND, side="left")
-    if din_flag:
-        dx, dy = strip["DIN"]
-        svg.wire([(dx, dy), (dx, dy - 45)], CLED)
-        flag(svg, dx, dy - 45, din_flag, CLED)
     return psu, strip
 def rpi_box(svg, x, y):
     svg.rect(x, y, 240, 54, fill="#fce4ec", stroke="#ad1457", rx=8)
@@ -358,7 +352,7 @@ def nodemcu():
                   left=["A0", "RSV (G)", "RSV (VU)", "SD3", "SD2", "SD1", "CMD", "SD0", "CLK", "GND", "3V3", "EN",
                         "RST", "GND", "VIN"],
                   right=["D0", "D1", "D2", "D3", "D4", "3V3", "GND", "D5", "D6", "D7", "D8", "RX", "TX", "GND", "3V3"])
-    devkit("v2 / v3", "Подключение: NodeMCU (ESP8266)",
+    devkit("v2 / v3", "Подключение: NodeMCU ESP8266 (ESP-12E)",
            "Вид сверху: антенна вверху, USB внизу. Подписи пинов совпадают у NodeMCU v2 (Amica) и v3 (LoLin): "
            "у v3 второй и третий слева — G и VU.",
            board,
@@ -395,123 +389,6 @@ def esp32():
            sd_y=195, dht_y=462)
 
 
-# --- голый ESP-12 ---
-
-def pull(svg: Svg, pin, value, net, color, side="right"):
-    """Подтягивающий резистор от вывода к цепи питания."""
-    x, y = pin
-    sign = 1 if side == "right" else -1
-    svg.wire([(x, y), (x + sign * 70, y)], color, width=2.6)
-    svg.resistor(x + sign * 38, y, value)
-    flag(svg, x + sign * 70, y, net, color, side=side)
-
-
-def esp12():
-    svg = Svg(1240, 1050)
-    header(svg, "Подключение: модуль ESP-12E / ESP-12F без платы",
-           "Вид сверху, антенна вверху. Модулю нужны стабилизатор 3,3 В, подтяжки для загрузки и переходник "
-           "USB-UART 3,3 В — через него прошивка и связь с Raspberry.")
-    b = Board("ESP-12E/F", x=480, y=150, width=240,
-              left=["RST", "ADC", "EN", "GPIO16", "GPIO14", "GPIO12", "GPIO13", "VCC"],
-              right=["TXD", "RXD", "GPIO5", "GPIO4", "GPIO0", "GPIO2", "GPIO15", "GND"])
-    pin = b.pin
-    for k, side in [("RST", "L"), ("ADC", "L"), ("EN", "L"), ("GPIO14", "L"), ("GPIO12", "L"), ("GPIO13", "L"),
-                    ("VCC", "L"), ("TXD", "R"), ("RXD", "R"), ("GPIO4", "R"), ("GPIO0", "R"), ("GPIO2", "R"),
-                    ("GPIO15", "R"), ("GND", "R")]:
-        pin(k, side)
-    b.draw(svg, "голый модуль", usb=False)
-
-    # Левый ряд: подтяжки RST и EN, питание, батарея, SD
-    pull(svg, pin("RST", "L"), "10к", "→ 3,3 В", C3V3, side="left")
-    pull(svg, pin("EN", "L"), "10к", "→ 3,3 В", C3V3, side="left")
-    flag(svg, *pin("VCC", "L"), "→ 3,3 В (OUT стабилизатора)", C3V3, side="left")
-    battery_box(svg, 40, 150, pin("ADC", "L"), None, "вход ADC 0–1 В: divider = 4,3, adc_ref = 1.0", r1="33 кОм")
-
-    sd = Module(svg, 40, 400, 220, 250, "Модуль microSD", "со стабилизатором 3,3 В\n→ питание 5 В",
-                ["GND", "VCC", "MISO", "MOSI", "SCK", "CS"], side="right", fill="#ede7f6")
-    route(svg, [(pin("GPIO14", "L"), sd["SCK"], CSCK), (pin("GPIO12", "L"), sd["MISO"], CMISO),
-                (pin("GPIO13", "L"), sd["MOSI"], CMOSI)], [360, 380, 400], sd["GND"][0])
-    flag(svg, *sd["GND"], "→ GND", CGND)
-    flag(svg, *sd["VCC"], "→ 5 В", C5V)
-
-    # Правый ряд
-    uart = Module(svg, 980, 110, 220, 170, "Переходник USB-UART", "CH340 / CP2102, перемычка 3,3 В\nUSB → Raspberry",
-                  ["RXD", "TXD", "GND", "5V"], side="left", fill="#fce4ec")
-    route(svg, [(pin("TXD", "R"), uart["RXD"], CUSB), (pin("RXD", "R"), uart["TXD"], "#455a64")],
-          [840, 860], uart["RXD"][0])
-    flag(svg, *uart["GND"], "→ GND", CGND, side="left")
-    flag(svg, *uart["5V"], "→ 5 В", C5V, side="left")
-
-    gx, gy = pin("GPIO4", "R")
-    svg.wire([(gx, gy), (gx + 100, gy)], CLED)
-    svg.resistor(gx + 50, gy, "330 Ом")
-    flag(svg, gx + 100, gy, "→ DIN ленты", CLED)
-
-    pull(svg, pin("GPIO0", "R"), "10к", "→ 3,3 В", C3V3)
-
-    dht = Module(svg, 980, 300, 200, 150, "Датчик DHT11 / DHT22", "модуль с подтяжкой на плате\nподписи: S, +, −",
-                 ["S (DATA)", "+ (VCC)", "− (GND)"], side="left", fill="#e3f2fd")
-    route(svg, [(pin("GPIO2", "R"), dht["S (DATA)"], CDHT)], [940], dht["S (DATA)"][0])
-    flag(svg, *dht["+ (VCC)"], "→ 3,3 В", C3V3, side="left")
-    flag(svg, *dht["− (GND)"], "→ GND", CGND, side="left")
-
-    # GPIO15: подтяжка к GND (ветка вниз) и CS модуля SD (в обход снизу)
-    cx, cy = pin("GPIO15", "R")
-    junction, cs_lane, cs_bottom = cx + 40, 870, 690
-    svg.wire([(cx, cy), (cs_lane, cy), (cs_lane, cs_bottom), (290, cs_bottom), (290, sd["CS"][1]), sd["CS"]], CCS)
-    svg.back.append(f'<circle cx="{junction}" cy="{cy}" r="5" fill="{CCS}"/>')
-    svg.wire([(junction, cy), (junction, cy + 62)], CGND, width=2.6)
-    svg.resistor(junction, cy + 30, "10к", vertical=True)
-    flag(svg, junction, cy + 62, "→ GND", CGND)
-    gndx, gndy = pin("GND", "R")
-    svg.wire([(gndx, gndy), (gndx + 14, gndy), (gndx + 14, gndy + 80)], CGND)
-    flag(svg, gndx + 14, gndy + 80, "→ GND", CGND)
-
-    notes(svg, 900, 480, [
-        "1. VCC модуля — только 3,3 В: 5 В его сожгут.",
-        "2. Переходник — на 3,3 В; TXD ↔ RXD крест-накрест.",
-        "3. Прошивка: зажать PROG, подать питание,",
-        "    отпустить PROG, запустить загрузку.",
-        "4. GPIO15 к GND через 10 кОм обязательно,",
-        "    иначе модуль не запустится.",
-    ], width=320, title="Перед включением")
-
-    # Цепи питания
-    nets = [
-        (C3V3, "+3,3 В", "OUT стабилизатора → VCC модуля, подтяжки RST, EN, GPIO0, «+» датчика"),
-        (C5V, "+5 В", "5V переходника → IN стабилизатора, VCC модуля SD"),
-        (CGND, "GND", "всё «→ GND» соединить вместе: модуль, стабилизатор, переходник, SD,"),
-        (CGND, "", "датчик, кнопка, блок питания ленты"),
-    ]
-    svg.rect(40, 715, 560, 125, fill="#f6f8fa", stroke="#57606a", rx=8)
-    svg.text(54, 737, "Цепи питания: метки с одинаковой подписью соединяются", size=13, weight="bold")
-    for i, (color, name, text) in enumerate(nets):
-        y = 762 + i * 20
-        if name:
-            svg.text(54, y, name, size=12, weight="bold", color=color)
-        svg.text(110, y, text, size=12)
-
-    reg = Module(svg, 640, 685, 210, 140, "Стабилизатор AMS1117-3.3", "≥ 500 мА; 10 мкФ на входе\nи выходе",
-                 ["IN", "GND", "OUT"], side="right", fill="#fff3e0")
-    flag(svg, *reg["IN"], "→ 5 В", C5V)
-    flag(svg, *reg["GND"], "→ GND", CGND)
-    flag(svg, *reg["OUT"], "→ 3,3 В", C3V3)
-
-    button = Module(svg, 960, 640, 180, 90, "Кнопка PROG", "для прошивки", ["A", "B"], side="bottom",
-                    fill="#fafafa")
-    ax, ay = button["A"]
-    bx, by = button["B"]
-    svg.wire([(ax, ay), (ax, ay + 30)], CGND, width=2.6)
-    flag(svg, ax, ay + 30, "→ GPIO0", "#455a64", side="left")
-    svg.wire([(bx, by), (bx, by + 30)], CGND, width=2.6)
-    flag(svg, bx, by + 30, "→ GND", CGND)
-
-    power_section(svg, 40, 870, "к началу ленты: вход DIN", din_flag="→ GPIO4 через 330 Ом")
-    legend(svg, 960, 860, LEGEND[:4] + [(CLED, "данные ленты"), (CCS, "SD CS")])
-    svg.save("esp12.svg", "Схема подключения ESP-12E/F")
-
-
 if __name__ == "__main__":
     nodemcu()
     esp32()
-    esp12()

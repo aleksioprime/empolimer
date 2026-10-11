@@ -14,7 +14,7 @@
 
 | Каталог | Назначение |
 | --- | --- |
-| [firmware/](firmware/README.md) | **прошивка ESP** (NodeMCU, ESP-12, ESP32), страница устройства в браузере и пример `config.json` для SD-карты |
+| [firmware/](firmware/README.md) | **прошивка ESP** (NodeMCU ESP8266, ESP32 DevKit), страница устройства в браузере и пример `config.json` для SD-карты |
 | [rpi/](rpi/README.md) | **станция на Raspberry Pi** (Zero / 3): камера и показания ESP на дисплее, управление подсветкой |
 | [deploy/](deploy/README.md) | установка станции на Raspberry по сети |
 | [web/](web/README.md) | **сервер и веб-мониторинг**: MQTT → worker → PostgreSQL → API → интерфейс; развёрнут в Coolify |

@@ -1,6 +1,6 @@
 # Прошивка устройства
 
-Одна программа для **NodeMCU**, **ESP-12** (ESP8266) и **ESP32**. Устройство
+Одна программа для **NodeMCU ESP8266** (модуль ESP-12E) и **ESP32 DevKit**. Устройство
 модульное: датчик температуры и влажности, подсветка, SD-карта, Wi-Fi и связь
 с Raspberry работают независимо — если модуль не подключён, остальные
 продолжают работать. Подключение модулей — [docs/hardware.md](../docs/hardware.md),
@@ -33,21 +33,20 @@
 
    | Устройство | Плата в Arduino IDE |
    | --- | --- |
-   | NodeMCU | NodeMCU 1.0 (ESP-12E Module) |
-   | ESP-12 / Troyka Wi-Fi | Generic ESP8266 Module |
-   | ESP32 | ESP32 Dev Module |
+   | NodeMCU ESP8266 (v2, v3) | NodeMCU 1.0 (ESP-12E Module) |
+   | ESP32 DevKit V1 | ESP32 Dev Module |
 
 4. Скорость монитора порта — **115200**.
 
-Голый ESP-12 (например, Troyka Wi-Fi от Амперки) прошивается через
-USB-UART-переходник: отключите питание, зажмите `PROG`, подайте питание,
-отпустите `PROG` и запустите загрузку.
+Если загрузка на ESP32 не начинается («Connecting…»), зажмите кнопку `BOOT`
+на плате, пока не появятся проценты. Для USB-чипа платы может понадобиться
+драйвер: CH340 (NodeMCU v3) или CP2102 (NodeMCU v2, большинство ESP32).
 
 ### PlatformIO
 
 ```bash
 cd firmware
-pio run -e nodemcu -t upload      # или esp12, esp32
+pio run -e nodemcu -t upload      # или -e esp32
 pio device monitor
 ```
 

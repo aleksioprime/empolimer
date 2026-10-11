@@ -31,7 +31,7 @@ jobs:
           path: ~/.platformio
           key: pio-${{ hashFiles('firmware/platformio.ini') }}
 
-      - name: Build NodeMCU, ESP-12, ESP32
+      - name: Build NodeMCU ESP8266 and ESP32
         working-directory: firmware
         run: |
           pip install -q platformio

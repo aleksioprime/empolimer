@@ -20,7 +20,7 @@
   #endif
   #define ADC_MAX 4095
 #elif defined(ESP8266)
-  // NodeMCU и голый ESP-12 — один и тот же чип; в скобках подписи на NodeMCU.
+  // NodeMCU v2 / v3 (модуль ESP-12E); номера GPIO, в скобках — подписи на плате.
   #define BOARD_NAME "esp8266"
   #ifndef PIN_DHT
     #define PIN_DHT 2        // GPIO2 (D4)
@@ -36,7 +36,7 @@
   #endif
   #define ADC_MAX 1023
 #else
-  #error "Прошивка поддерживает только ESP8266 (NodeMCU, ESP-12) и ESP32"
+  #error "Прошивка поддерживает только NodeMCU ESP8266 и ESP32 DevKit"
 #endif
 
 #define FIRMWARE_VERSION "2.1.0"
