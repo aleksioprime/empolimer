@@ -23,7 +23,7 @@ deploy/install.sh pi@192.168.1.50 --autostart
 Установщик:
 
 1. копирует программу в `~/empolimer` (файл `station.conf` на плате не трогает);
-2. ставит из apt `python3-pyqt5`, `python3-serial`, `python3-picamera2`
+2. ставит из apt `python3-pyqt5`, `python3-serial`, `python3-picamera2`, `python3-qrcode`
    (с `--usb-camera` — ещё `python3-opencv`), только если их нет;
 3. добавляет пользователя в группы `dialout` (порт ESP) и `video` (камера) —
    после этого попросит перезагрузить плату;

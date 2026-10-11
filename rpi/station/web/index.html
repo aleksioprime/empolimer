@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Станция ЕмПолимер</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%232e7d5b'/><path d='M16 7c-4 5-6 8-6 11a6 6 0 0 0 12 0c0-3-2-6-6-11z' fill='white'/></svg>">
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d; --text: #e6edf3; --muted: #8b949e;
+    --ok: #3fb950; --low: #58a6ff; --high: #f0883e; --bad: #f85149; --accent: #2ea043;
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f4f6f8; --card: #ffffff; --border: #d8dee4; --text: #1f2328; --muted: #656d76;
+      --ok: #1a7f37; --low: #0969da; --high: #bc4c00; --bad: #cf222e; --accent: #2e7d5b;
+    }
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 14px 20px; border-bottom: 1px solid var(--border);
+  }
+  header h1 { font-size: 19px; margin: 0; }
+  header .sub { color: var(--muted); font-size: 13px; }
+  .spacer { flex: 1; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px;
+    font-size: 13px; border: 1px solid var(--border); white-space: nowrap;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+  .ok .dot { background: var(--ok); } .bad .dot { background: var(--bad); } .warn .dot { background: var(--high); }
+  .banner {
+    display: none; margin: 12px 20px 0; padding: 10px 14px; border-radius: 10px;
+    background: color-mix(in srgb, var(--bad) 15%, transparent); color: var(--bad);
+  }
+  main {
+    display: grid; gap: 16px; padding: 16px 20px 24px; max-width: 1280px; margin: 0 auto;
+    grid-template-columns: minmax(0, 3fr) minmax(280px, 2fr);
+  }
+  @media (max-width: 860px) { main { grid-template-columns: 1fr; padding: 12px; } header { padding: 12px; } }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); }
+  .video { position: relative; overflow: hidden; aspect-ratio: 4 / 3; background: #010409; }
+  .video img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .video .overlay {
+    position: absolute; inset: 0; display: flex; flex-direction: column; gap: 6px;
+    align-items: center; justify-content: center; color: #8b949e; text-align: center; padding: 20px;
+  }
+  .video .badge {
+    position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,.55); color: #fff;
+    padding: 3px 9px; border-radius: 6px; font-size: 12px; display: flex; gap: 6px; align-items: center;
+  }
+  .video .badge .dot { background: #f85149; animation: pulse 1.6s infinite; }
+  @keyframes pulse { 50% { opacity: .3; } }
+  .video .tools { position: absolute; right: 10px; bottom: 10px; display: flex; gap: 8px; }
+  .icon-btn {
+    background: rgba(0,0,0,.55); color: #fff; border: 0; border-radius: 8px; padding: 7px 10px;
+    cursor: pointer; font-size: 13px; text-decoration: none;
+  }
+  .side { display: flex; flex-direction: column; gap: 12px; }
+  .metric { padding: 14px 16px; border-width: 2px; }
+  .metric .label { color: var(--muted); font-size: 13px; }
+  .metric .value { font-size: 42px; font-weight: 700; line-height: 1.1; margin: 2px 0; font-variant-numeric: tabular-nums; }
+  .metric .value small { font-size: 18px; font-weight: 500; margin-left: 4px; }
+  .metric .hint { font-size: 13px; }
+  .metrics { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 860px) and (min-width: 480px) { .metrics { grid-template-columns: 1fr 1fr; } }
+  .updated { color: var(--muted); font-size: 13px; padding: 0 4px; }
+  .updated.stale { color: var(--high); }
+  .modules { padding: 12px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; font-size: 14px; }
+  .modules .item { display: flex; align-items: center; gap: 8px; }
+  .modules .detail { color: var(--muted); font-size: 12px; }
+  .light { padding: 14px 16px; }
+  .light .title { display: flex; justify-content: space-between; margin-bottom: 10px; }
+  .light .state { color: var(--muted); font-size: 13px; }
+  .segmented { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .segmented button {
+    padding: 11px; border-radius: 10px; border: 1px solid var(--border); background: transparent;
+    color: var(--text); font: inherit; cursor: pointer; transition: background .15s;
+  }
+  .segmented button:hover:not(:disabled):not(.active) { background: color-mix(in srgb, var(--text) 8%, transparent); }
+  .segmented button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .segmented button:disabled { opacity: .45; cursor: not-allowed; }
+  .note { color: var(--muted); font-size: 12px; margin-top: 8px; }
+  footer { color: var(--muted); font-size: 12px; text-align: center; padding: 0 20px 20px; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Станция ЕмПолимер</h1>
+    <div class="sub" id="device">Подключение…</div>
+  </div>
+  <div class="spacer"></div>
+  <span class="pill" id="esp"><span class="dot"></span><span>ESP</span></span>
+  <span class="pill" id="clock"></span>
+</header>
+
+<div class="banner" id="offline">Нет связи со станцией — показаны последние данные. Страница обновится сама.</div>
+
+<main>
+  <section class="card video">
+    <img id="stream" alt="Камера станции">
+    <div class="overlay" id="camera-overlay"><div>Подключение к камере…</div></div>
+    <div class="badge" id="live" hidden><span class="dot"></span>В ЭФИРЕ</div>
+    <div class="tools">
+      <a class="icon-btn" href="/snapshot.jpg" download="empolimer.jpg" title="Сохранить кадр">Снимок</a>
+      <button class="icon-btn" id="fullscreen" title="Во весь экран">⛶</button>
+    </div>
+  </section>
+
+  <section class="side">
+    <div class="metrics">
+      <div class="card metric" id="temperature">
+        <div class="label">Температура</div>
+        <div class="value">—</div>
+        <div class="hint"></div>
+      </div>
+      <div class="card metric" id="humidity">
+        <div class="label">Влажность</div>
+        <div class="value">—</div>
+        <div class="hint"></div>
+      </div>
+    </div>
+    <div class="card metric" id="battery" hidden>
+      <div class="label">Батарея</div>
+      <div class="value">—</div>
+    </div>
+    <div class="updated" id="updated"></div>
+
+    <div class="card modules" id="modules"></div>
+
+    <div class="card light">
+      <div class="title"><strong>Подсветка</strong><span class="state" id="light-state">нет данных</span></div>
+      <div class="segmented">
+        <button data-mode="on">Включить</button>
+        <button data-mode="off">Выключить</button>
+        <button data-mode="auto">Авто</button>
+      </div>
+      <div class="note" id="light-note"></div>
+    </div>
+  </section>
+</main>
+
+<footer id="footer"></footer>
+
+<script>
+const $ = (selector) => document.querySelector(selector);
+const LEVEL = {
+  ok: { color: 'var(--ok)', text: 'в норме' },
+  low: { color: 'var(--low)', text: 'ниже нормы' },
+  high: { color: 'var(--high)', text: 'выше нормы' },
+  unknown: { color: 'var(--muted)', text: 'нет данных' },
+};
+let state = null;
+let failures = 0;
+let streamBroken = false;
+
+const fmt = (value, digits = 1) => value === null || value === undefined
+  ? '—' : Number(value).toLocaleString('ru-RU', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+
+const ago = (seconds) => {
+  if (seconds === null || seconds === undefined) return 'измерений ещё не было';
+  if (seconds < 5) return 'только что';
+  if (seconds < 60) return `${Math.round(seconds)} с назад`;
+  if (seconds < 3600) return `${Math.floor(seconds / 60)} мин назад`;
+  return `${Math.floor(seconds / 3600)} ч ${Math.floor(seconds % 3600 / 60)} мин назад`;
+};
+
+function pill(el, cls, text) {
+  el.className = `pill ${cls}`;
+  el.lastElementChild.textContent = text;
+}
+
+function metric(id, value, unit, level, min, max) {
+  const card = $(`#${id}`);
+  const info = LEVEL[level] || LEVEL.unknown;
+  card.querySelector('.value').innerHTML = value === null ? '—' : `${fmt(value)}<small>${unit}</small>`;
+  card.querySelector('.value').style.color = info.color;
+  card.querySelector('.hint').textContent = `${info.text} · ${min}–${max} ${unit}`;
+  card.querySelector('.hint').title = `Норма: ${min}–${max} ${unit}`;
+  card.querySelector('.hint').style.color = info.color;
+  card.style.borderColor = level === 'low' || level === 'high' ? info.color : '';
+}
+
+function moduleItem(name, ok, detail = '') {
+  const cls = ok === null || ok === undefined ? '' : ok ? 'ok' : 'bad';
+  return `<div class="item ${cls}"><span class="dot"></span><span>${name}</span>` +
+    (detail ? ` <span class="detail">${detail}</span>` : '') + '</div>';
+}
+
+function render() {
+  const s = state;
+  const st = s.status || {};
+  const known = s.esp.connected && Object.keys(st).length > 0;
+
+  $('#device').textContent = st.id ? `Устройство ${st.id} · прошивка ${st.fw || '?'}` : s.esp.detail;
+  pill($('#esp'), s.esp.connected ? 'ok' : 'bad', s.esp.connected ? 'ESP подключена' : 'Нет связи с ESP');
+
+  const t = s.thresholds;
+  metric('temperature', s.reading.temperature, '°C', s.levels.temperature, t.temp_min, t.temp_max);
+  metric('humidity', s.reading.humidity, '%', s.levels.humidity, t.hum_min, t.hum_max);
+  $('#battery').hidden = s.reading.battery === null;
+  if (s.reading.battery !== null) $('#battery .value').innerHTML = `${fmt(s.reading.battery, 2)}<small>В</small>`;
+
+  const updated = $('#updated');
+  if (known && st.sensor === false) {
+    updated.textContent = 'Датчик не отвечает — проверьте провод';
+    updated.className = 'updated stale';
+  } else {
+    updated.textContent = `Обновлено: ${ago(s.reading.age)}${s.reading.stale ? ' — данные устарели' : ''}`;
+    updated.className = `updated${s.reading.stale ? ' stale' : ''}`;
+  }
+
+  const value = (key) => known ? st[key] : null;
+  $('#modules').innerHTML = [
+    moduleItem('Wi-Fi', value('wifi'), st.wifi && st.rssi ? `${st.rssi} дБм` : ''),
+    moduleItem('Сервер', value('mqtt'), known && st.queue ? `очередь ${st.queue}` : ''),
+    moduleItem('SD-карта', value('sd')),
+    moduleItem('Часы', value('time')),
+  ].join('');
+
+  const lightOn = !!st.light, lightAuto = !!st.light_auto;
+  $('#light-state').textContent = known
+    ? `${lightOn ? 'включена' : 'выключена'} · ${lightAuto ? 'по расписанию' : 'вручную'}` : 'нет данных';
+  document.querySelectorAll('.segmented button').forEach((button) => {
+    const mode = button.dataset.mode;
+    const active = known && (mode === 'auto' ? lightAuto : !lightAuto && (mode === 'on') === lightOn);
+    button.classList.toggle('active', active);
+    button.disabled = !s.control || !s.esp.connected;
+  });
+  $('#light-note').textContent = !s.control ? 'Управление из браузера выключено в настройках станции'
+    : !s.esp.connected ? 'ESP не подключена' : '';
+
+  const overlay = $('#camera-overlay');
+  const cameraOk = s.camera.ok && !streamBroken;
+  overlay.hidden = cameraOk;
+  if (!cameraOk) {
+    overlay.innerHTML = `<div>${s.camera.ok ? 'Переподключение к видео…' : (s.camera.message || 'Камера не работает')}</div>`;
+  }
+  $('#live').hidden = !cameraOk;
+
+  const server = s.server || {};
+  $('#footer').textContent = server.urls?.length
+    ? `Адрес станции: ${server.urls.join(' или ')} · смотрят: ${server.viewers}` : '';
+}
+
+async function poll() {
+  try {
+    const response = await fetch('/api/state', { cache: 'no-store' });
+    if (!response.ok) throw new Error(response.status);
+    state = await response.json();
+    failures = 0;
+    $('#offline').style.display = 'none';
+    render();
+  } catch {
+    failures += 1;
+    if (failures >= 2) $('#offline').style.display = 'block';
+  }
+}
+
+// Видео: при обрыве переподключаемся через 3 с
+const stream = $('#stream');
+function connectStream() {
+  stream.src = `/stream.mjpg?t=${Date.now()}`;
+}
+stream.addEventListener('load', () => { streamBroken = false; });
+stream.addEventListener('error', () => {
+  streamBroken = true;
+  if (state) render();
+  setTimeout(() => { streamBroken = false; connectStream(); }, 3000);
+});
+
+async function setLight(mode) {
+  document.querySelectorAll('.segmented button').forEach((b) => { b.disabled = true; });
+  try {
+    const response = await fetch('/api/light', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mode }),
+    });
+    if (!response.ok) $('#light-note').textContent = (await response.json()).detail || 'Не удалось';
+  } catch {
+    $('#light-note').textContent = 'Нет связи со станцией';
+  }
+  setTimeout(poll, 700);
+}
+document.querySelectorAll('.segmented button').forEach((button) =>
+  button.addEventListener('click', () => setLight(button.dataset.mode)));
+
+$('#fullscreen').addEventListener('click', () => {
+  const video = $('.video');
+  document.fullscreenElement ? document.exitFullscreen() : video.requestFullscreen?.();
+});
+
+function tickClock() {
+  $('#clock').textContent = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+}
+
+tickClock();
+setInterval(tickClock, 15000);
+poll();
+setInterval(poll, 2000);
+connectStream();
+</script>
+</body>
+</html>

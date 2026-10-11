@@ -24,7 +24,7 @@ REBOOT=0
 
 if [[ $CODE_ONLY -eq 0 ]]; then
   # PyQt5 и Picamera2 — только из apt: на Pi Zero их не собрать через pip.
-  PACKAGES=(python3-pyqt5 python3-serial python3-picamera2 fonts-dejavu-core)
+  PACKAGES=(python3-pyqt5 python3-serial python3-picamera2 python3-qrcode fonts-dejavu-core)
   [[ $USB_CAMERA -eq 1 ]] && PACKAGES+=(python3-opencv)
   MISSING=()
   for package in "${PACKAGES[@]}"; do

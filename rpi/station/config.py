@@ -24,6 +24,9 @@ class Settings:
     temp_max: float = 28.0
     hum_min: float = 40.0
     hum_max: float = 70.0
+    web_port: int = 8080          # веб-доступ к станции; 0 — выключен
+    web_control: bool = True      # можно ли управлять подсветкой из браузера
+    stream_fps: int = 5           # кадров в секунду в видео для браузера
 
     @property
     def frame_size(self) -> tuple[int, int]:
@@ -75,10 +78,11 @@ def load(argv: Optional[list[str]] = None) -> Settings:
     parser.add_argument("--fps", type=int)
     parser.add_argument("--window", dest="fullscreen", action="store_false", default=None,
                         help="окно вместо полноэкранного режима")
+    parser.add_argument("--web-port", dest="web_port", type=int, help="порт веб-доступа (0 — выключить)")
     args = parser.parse_args(argv)
 
     values = read_file(args.config)
-    for name in ("port", "camera", "camera_size", "fps", "fullscreen"):
+    for name in ("port", "camera", "camera_size", "fps", "fullscreen", "web_port"):
         value = getattr(args, name)
         if value is not None:
             values[name] = value

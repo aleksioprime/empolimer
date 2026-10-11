@@ -5,10 +5,10 @@ from __future__ import annotations
 import time
 from typing import Optional
 
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QImage, QKeySequence, QPixmap
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal
+from PyQt5.QtGui import QColor, QImage, QKeySequence, QPainter, QPixmap
 from PyQt5.QtWidgets import (
-    QFrame, QGridLayout, QHBoxLayout, QLabel, QMainWindow, QPushButton, QShortcut,
+    QDialog, QFrame, QGridLayout, QHBoxLayout, QLabel, QMainWindow, QPushButton, QShortcut,
     QSizePolicy, QVBoxLayout, QWidget,
 )
 
@@ -31,7 +31,117 @@ QPushButton { background: #21262d; border: 1px solid #30363d; border-radius: 10p
               font-size: 16px; padding: 10px; min-height: 28px; }
 QPushButton:checked { background: #238636; border-color: #2ea043; }
 QPushButton:pressed { background: #30363d; }
+QFrame#web { background: #161b22; border: 1px solid #30363d; border-radius: 10px; }
+QFrame#web:hover { border-color: #8b949e; }
+QLabel#webTitle { font-size: 14px; background: transparent; }
+QLabel#webDetail { color: #8b949e; font-size: 12px; background: transparent; }
+QDialog { background: #0d1117; }
+QLabel#qrUrl { font-size: 22px; font-weight: bold; }
 """
+
+WEB_STATES = {
+    "ok": ("#3fb950", "Веб-доступ работает"),
+    "starting": ("#6e7681", "Веб-доступ запускается…"),
+    "error": ("#f85149", "Веб-доступ не работает"),
+    "disabled": ("#6e7681", "Веб-доступ выключен"),
+}
+
+
+def qr_pixmap(text: str, size: int) -> Optional[QPixmap]:
+    """QR-код адреса станции; None, если нет библиотеки qrcode (python3-qrcode)."""
+    try:
+        import qrcode
+    except ImportError:
+        return None
+    code = qrcode.QRCode(border=2)
+    code.add_data(text)
+    matrix = code.get_matrix()
+    cells = len(matrix)
+    scale = max(1, size // cells)
+    pixmap = QPixmap(cells * scale, cells * scale)
+    pixmap.fill(Qt.white)
+    painter = QPainter(pixmap)
+    for y, row in enumerate(matrix):
+        for x, dark in enumerate(row):
+            if dark:
+                painter.fillRect(x * scale, y * scale, scale, scale, QColor("black"))
+    painter.end()
+    return pixmap
+
+
+class WebDialog(QDialog):
+    """Адрес станции крупно и QR-код — чтобы открыть страницу с телефона."""
+
+    def __init__(self, info: dict, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Веб-доступ к станции")
+        layout = QVBoxLayout(self)
+        layout.setSpacing(12)
+        layout.setContentsMargins(24, 24, 24, 24)
+        urls = info.get("urls") or []
+        if info.get("state") == "ok" and urls:
+            title = QLabel("Откройте на телефоне или компьютере в той же сети:")
+            layout.addWidget(title)
+            pixmap = qr_pixmap(urls[0], 280)
+            if pixmap:
+                qr = QLabel()
+                qr.setPixmap(pixmap)
+                qr.setAlignment(Qt.AlignCenter)
+                layout.addWidget(qr)
+            for index, url in enumerate(urls):
+                label = QLabel(url, objectName="qrUrl" if index == 0 else "muted")
+                label.setAlignment(Qt.AlignCenter)
+                label.setTextInteractionFlags(Qt.TextSelectableByMouse)
+                layout.addWidget(label)
+            viewers = QLabel(f"Смотрят видео: {info.get('viewers', 0)} · подключено: {info.get('clients', 0)}",
+                             objectName="muted")
+            viewers.setAlignment(Qt.AlignCenter)
+            layout.addWidget(viewers)
+        else:
+            _, text = WEB_STATES.get(info.get("state"), WEB_STATES["error"])
+            message = text + (f": {info['error']}" if info.get("error") else "")
+            if info.get("state") == "disabled":
+                message += ". Включите web_port в station.conf"
+            layout.addWidget(QLabel(message))
+        close = QPushButton("Закрыть")
+        close.clicked.connect(self.accept)
+        layout.addWidget(close)
+
+
+class WebRow(QFrame):
+    """Строка «Веб-доступ»: состояние сервера, адрес и подключённые; по нажатию — QR-код."""
+
+    clicked = pyqtSignal()
+
+    def __init__(self):
+        super().__init__(objectName="web")
+        self.setCursor(Qt.PointingHandCursor)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(10, 6, 10, 6)
+        layout.setSpacing(0)
+        self._title = QLabel("", objectName="webTitle")
+        self._detail = QLabel("", objectName="webDetail")
+        layout.addWidget(self._title)
+        layout.addWidget(self._detail)
+
+    def show_info(self, info: dict) -> None:
+        state = info.get("state", "disabled")
+        color, text = WEB_STATES.get(state, WEB_STATES["error"])
+        self._title.setText(f"<span style='color:{color}'>●</span> {text}")
+        if state == "ok":
+            url = (info.get("urls") or [""])[0].replace("http://", "")
+            people = info.get("clients", 0)
+            watching = info.get("viewers", 0)
+            who = f"подключено: {people}" + (f", смотрят видео: {watching}" if watching else "") if people else "никто не подключён"
+            self._detail.setText(f"{url} · {who}")
+        elif state == "error":
+            self._detail.setText(info.get("error") or "")
+        else:
+            self._detail.setText("")
+
+    def mousePressEvent(self, event) -> None:
+        self.clicked.emit()
+        super().mousePressEvent(event)
 
 
 class MetricCard(QFrame):
@@ -73,11 +183,12 @@ class Indicator(QLabel):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self, settings: Settings, link, camera):
+    def __init__(self, settings: Settings, link, camera, web=None):
         super().__init__()
         self._settings = settings
         self._link = link
         self._camera = camera
+        self._web = web
         self._pixmap: Optional[QPixmap] = None
         self._reading: Optional[protocol.Reading] = None
         self._reading_at: Optional[float] = None
@@ -103,6 +214,7 @@ class MainWindow(QMainWindow):
         QShortcut(QKeySequence("F11"), self, activated=self._toggle_fullscreen)
         self._on_connection(False, "Поиск ESP…")
         self._render()
+        self._render_web()
 
     # --- построение экрана ---
 
@@ -150,6 +262,10 @@ class MainWindow(QMainWindow):
         for index, widget in enumerate(self._indicators.values()):
             grid.addWidget(widget, index // 2, index % 2)
         panel.addLayout(grid)
+
+        self._web_row = WebRow()
+        self._web_row.clicked.connect(self._show_web_dialog)
+        panel.addWidget(self._web_row)
 
         panel.addStretch()
         self._light_state = QLabel("Подсветка", objectName="muted")
@@ -209,6 +325,16 @@ class MainWindow(QMainWindow):
     def _tick(self) -> None:
         self._clock.setText(time.strftime("%H:%M"))
         self._render_updated()
+        self._render_web()
+
+    def _web_info(self) -> dict:
+        return self._web.info() if self._web else {"state": "disabled"}
+
+    def _render_web(self) -> None:
+        self._web_row.show_info(self._web_info())
+
+    def _show_web_dialog(self) -> None:
+        WebDialog(self._web_info(), self).exec_()
 
     # --- отрисовка ---
 
@@ -282,6 +408,8 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event) -> None:
         self._ticker.stop()
+        if self._web:
+            self._web.stop()
         self._camera.stop()
         self._link.stop()
         event.accept()
