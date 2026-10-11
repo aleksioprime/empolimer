@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Станция ЕмПолимер
+Comment=Камера и показания датчиков
+Exec=sh -c "sleep 3; python3 @APP@/station.py > @APP@/station.log 2>&1"
+Icon=camera-video
+Terminal=false
+X-GNOME-Autostart-enabled=true

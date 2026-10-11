@@ -1,0 +1,19 @@
+# Настройки станции. Скопируйте в station.conf (установщик делает это сам).
+# Аргументы командной строки важнее этого файла.
+
+# Порт ESP: auto — первый /dev/ttyUSB* или /dev/ttyACM*
+port = auto
+
+# Камера: auto (модуль камеры, затем USB), picamera, usb, none
+camera = auto
+camera_size = 640x480
+# Кадров в секунду: Pi Zero — 5–10, Pi 3 — до 15
+fps = 10
+
+fullscreen = yes
+
+# Границы нормы: значения вне них подсвечиваются
+temp_min = 18
+temp_max = 28
+hum_min = 40
+hum_max = 70

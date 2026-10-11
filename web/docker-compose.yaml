@@ -1,0 +1,92 @@
+# Локальная разработка: весь стек, включая брокер MQTT и adminer.
+#   cp .env.example .env && docker compose -p empolimer up -d --build
+# Веб — http://localhost:8202, API — http://localhost:8201/api/openapi, adminer — http://localhost:8203
+x-app: &app
+  env_file: .env
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:16
+    <<: *app
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data/
+
+  redis:
+    image: redis:7
+    <<: *app
+    volumes:
+      - redis_volume:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    <<: *app
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - mosquitto_data:/mosquitto/data
+
+  backend:
+    build:
+      context: ./back
+    <<: *app
+    command: python src/main.py
+    volumes:
+      - ./back:/usr/src/app/
+    ports:
+      - "8201:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: ./worker
+    <<: *app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      backend:
+        condition: service_healthy  # таблицы создают миграции бэкенда
+      mosquitto:
+        condition: service_started
+
+  frontend:
+    build:
+      context: ./front
+      target: dev
+      args:
+        - VITE_LOGGING=1
+    volumes:
+      - ./front/app/src:/usr/src/app/src
+    ports:
+      - "8202:5173"
+    depends_on:
+      - backend
+
+  adminer:
+    image: adminer
+    <<: *app
+    ports:
+      - "8203:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_volume:
+  redis_volume:
+  mosquitto_data:

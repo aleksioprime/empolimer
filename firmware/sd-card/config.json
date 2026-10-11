@@ -1,0 +1,35 @@
+{
+  "device": {
+    "id": "greenhouse-1",
+    "interval": 60
+  },
+  "wifi": [
+    { "ssid": "School-WiFi", "pass": "password" },
+    { "ssid": "Phone-Hotspot", "pass": "password" }
+  ],
+  "mqtt": {
+    "host": "empolimer.technocrew.ru",
+    "port": 1883,
+    "user": "empolimer",
+    "pass": "password",
+    "prefix": "empolimer"
+  },
+  "time": {
+    "tz": "MSK-3"
+  },
+  "sensor": {
+    "type": 11
+  },
+  "light": {
+    "count": 30,
+    "color": "#C800B4",
+    "brightness": 200,
+    "on": "07:00",
+    "off": "21:00"
+  },
+  "battery": {
+    "enabled": false,
+    "divider": 2.58,
+    "adc_ref": 3.3
+  }
+}

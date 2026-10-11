@@ -1,0 +1,134 @@
+name: Build and Push to GHCR
+
+run-name: "Build and push Docker images for ${{ github.ref_name }} by ${{ github.actor }}"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'web/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  BACKEND_IMAGE: ghcr.io/${{ github.repository_owner }}/empolimer-backend
+  WORKER_IMAGE: ghcr.io/${{ github.repository_owner }}/empolimer-worker
+  FRONTEND_IMAGE: ghcr.io/${{ github.repository_owner }}/empolimer-frontend
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Backend tests
+        working-directory: web/back
+        run: |
+          pip install -q -r requirements.txt
+          python -m unittest discover -s tests -t .
+
+      - name: Worker tests
+        working-directory: web/worker
+        run: |
+          pip install -q -r requirements.txt
+          python -m unittest discover -s tests -t .
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Frontend build
+        working-directory: web/front/app
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      # Сборка Docker-образа бэкенда и пуш в GHCR
+      - name: Build and Push Backend Image
+        run: |
+          docker build \
+            --label "org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
+            -t "${BACKEND_IMAGE}:latest" \
+            -t "${BACKEND_IMAGE}:${{ github.sha }}" \
+            ./web/back
+          docker push "${BACKEND_IMAGE}:latest"
+          docker push "${BACKEND_IMAGE}:${{ github.sha }}"
+
+      # Сборка Docker-образа воркера и пуш в GHCR
+      - name: Build and Push Worker Image
+        run: |
+          docker build \
+            --label "org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
+            -t "${WORKER_IMAGE}:latest" \
+            -t "${WORKER_IMAGE}:${{ github.sha }}" \
+            ./web/worker
+          docker push "${WORKER_IMAGE}:latest"
+          docker push "${WORKER_IMAGE}:${{ github.sha }}"
+
+      # Сборка Docker-образа фронтенда и пуш в GHCR
+      - name: Build and Push Frontend Image
+        run: |
+          docker build --target prod \
+            --label "org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}" \
+            -t "${FRONTEND_IMAGE}:latest" \
+            -t "${FRONTEND_IMAGE}:${{ github.sha }}" \
+            ./web/front
+          docker push "${FRONTEND_IMAGE}:latest"
+          docker push "${FRONTEND_IMAGE}:${{ github.sha }}"
+
+      # Обновляем BACKEND_IMAGE_TAG, WORKER_IMAGE_TAG и FRONTEND_IMAGE_TAG в Coolify на текущий commit SHA
+      - name: Set image tags in Coolify
+        continue-on-error: true
+        env:
+          COOLIFY_API: ${{ secrets.COOLIFY_API }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+          COOLIFY_APP: ${{ secrets.COOLIFY_APP }}
+        run: |
+          curl -sS -X PATCH \
+            -H "Authorization: Bearer $COOLIFY_TOKEN" \
+            -H "Content-Type: application/json" \
+            "$COOLIFY_API/applications/$COOLIFY_APP/envs/bulk" \
+            -d "{\"data\":[{\"key\":\"BACKEND_IMAGE_TAG\",\"value\":\"${{ github.sha }}\"},{\"key\":\"WORKER_IMAGE_TAG\",\"value\":\"${{ github.sha }}\"},{\"key\":\"FRONTEND_IMAGE_TAG\",\"value\":\"${{ github.sha }}\"}]}" \
+          || echo "::warning::Coolify image tags update failed"
+
+      # Триггерим деплой в Coolify через API
+      - name: Trigger Coolify deploy
+        continue-on-error: true
+        env:
+          COOLIFY_API: ${{ secrets.COOLIFY_API }}
+          COOLIFY_APP: ${{ secrets.COOLIFY_APP }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
+        run: |
+          echo "Triggering Coolify deploy... ($COOLIFY_API/deploy?uuid=$COOLIFY_APP&force=true)"
+          curl -sS -X POST \
+            "$COOLIFY_API/deploy?uuid=$COOLIFY_APP&force=true" \
+            -H "Authorization: Bearer $COOLIFY_TOKEN" \
+          || echo "::warning::Coolify deploy trigger failed"

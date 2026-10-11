@@ -1,0 +1,19 @@
+.DS_Store
+__pycache__/
+*.pyc
+*.log
+
+# Секреты и данные окружения
+.env
+.env.prod
+web/back/media/
+
+# Фронтенд
+node_modules/
+dist/
+
+# Прошивка (PlatformIO)
+firmware/.pio/
+
+# Настройки конкретной станции — создаёт установщик
+rpi/station.conf

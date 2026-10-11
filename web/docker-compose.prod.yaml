@@ -1,0 +1,107 @@
+# Продакшн в Coolify. Образы собирает .github/workflows/build.yml и пушит в GHCR,
+# теги *_IMAGE_TAG выставляет тот же workflow. Переменные окружения задаются в Coolify
+# (список — .env.example). Брокер MQTT — отдельный сервис в сети iot.
+x-app: &app
+  restart: unless-stopped
+
+services:
+  postgres:
+    image: postgres:16
+    <<: *app
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      TZ: ${TZ:-Europe/Moscow}
+      PGTZ: ${TZ:-Europe/Moscow}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data/
+
+  redis:
+    image: redis:7
+    <<: *app
+    volumes:
+      - redis_volume:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    image: ghcr.io/aleksioprime/empolimer-backend:${BACKEND_IMAGE_TAG:-latest}
+    pull_policy: always
+    <<: *app
+    command: python src/main.py
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-${POSTGRES_DB}}
+      DB_USER: ${DB_USER:-${POSTGRES_USER}}
+      DB_PASSWORD: ${DB_PASSWORD:-${POSTGRES_PASSWORD}}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      CORS_ALLOW_ORIGINS: ${CORS_ALLOW_ORIGINS:-}
+      DEFAULT_TEMP_MIN: ${DEFAULT_TEMP_MIN:-18}
+      DEFAULT_TEMP_MAX: ${DEFAULT_TEMP_MAX:-28}
+      DEFAULT_HUM_MIN: ${DEFAULT_HUM_MIN:-40}
+      DEFAULT_HUM_MAX: ${DEFAULT_HUM_MAX:-70}
+      TZ: ${TZ:-Europe/Moscow}
+    volumes:
+      - media:/usr/src/app/media
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+  worker:
+    image: ghcr.io/aleksioprime/empolimer-worker:${WORKER_IMAGE_TAG:-latest}
+    pull_policy: always
+    <<: *app
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-${POSTGRES_DB}}
+      DB_USER: ${DB_USER:-${POSTGRES_USER}}
+      DB_PASSWORD: ${DB_PASSWORD:-${POSTGRES_PASSWORD}}
+      MQTT_BROKER: ${MQTT_BROKER}
+      MQTT_PORT: ${MQTT_PORT:-1883}
+      MQTT_USERNAME: ${MQTT_USERNAME}
+      MQTT_PASSWORD: ${MQTT_PASSWORD}
+      MQTT_TOPICS: ${MQTT_TOPICS:-empolimer/+/data,empolimer/+/status,devices/+/air}
+      AUTO_REGISTER_DEVICES: ${AUTO_REGISTER_DEVICES:-true}
+      TZ: ${TZ:-Europe/Moscow}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    networks:
+      - default
+      - iot
+
+  frontend:
+    image: ghcr.io/aleksioprime/empolimer-frontend:${FRONTEND_IMAGE_TAG:-latest}
+    pull_policy: always
+    <<: *app
+    volumes:
+      - media:/usr/share/nginx/html/media:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  media:
+  postgres_volume:
+  redis_volume:
+
+networks:
+  iot:
+    external: true

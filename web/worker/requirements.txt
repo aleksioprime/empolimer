@@ -1,0 +1,4 @@
+asyncpg==0.30.0
+SQLAlchemy==2.0.41
+aiomqtt==2.4.0
+pydantic-settings==2.10.1

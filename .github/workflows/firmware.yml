@@ -1,0 +1,55 @@
+name: Firmware
+
+run-name: "Build firmware for ${{ github.ref_name }} by ${{ github.actor }}"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'firmware/**'
+      - 'rpi/**'
+      - '.github/workflows/firmware.yml'
+  pull_request:
+    paths:
+      - 'firmware/**'
+      - 'rpi/**'
+  workflow_dispatch:
+
+jobs:
+  firmware:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.platformio
+          key: pio-${{ hashFiles('firmware/platformio.ini') }}
+
+      - name: Build NodeMCU, ESP-12, ESP32
+        working-directory: firmware
+        run: |
+          pip install -q platformio
+          pio run
+
+      - name: Upload firmware
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: firmware/.pio/build/*/firmware.bin
+
+  station:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Station tests
+        working-directory: rpi
+        run: python -m unittest discover -s tests -t .
