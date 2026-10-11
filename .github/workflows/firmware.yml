@@ -34,7 +34,7 @@ jobs:
       - name: Build NodeMCU ESP8266 and ESP32
         working-directory: firmware
         run: |
-          pip install -q platformio
+          pip install -q platformio intelhex  # intelhex нужен esptool для ESP32
           pio run
 
       - name: Upload firmware

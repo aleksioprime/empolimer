@@ -204,9 +204,13 @@ class WebServer:
             return
 
     def _self_check(self) -> None:
-        """Раз в SELF_CHECK_S секунд запрашивает /api/ping у самого себя — так видно, что сервер отвечает."""
+        """Раз в SELF_CHECK_S секунд запрашивает /api/ping у самого себя — так видно, что сервер отвечает.
+        Пока сервер не ответил ни разу (только запускается), проверка повторяется каждую секунду."""
         request = urllib.request.Request(f"http://127.0.0.1:{self.port}/api/ping", headers={SELF_CHECK_HEADER: "1"})
         while not self.stopping:
+            if self._httpd is None:  # сервер ещё не занял порт — проверять рано
+                time.sleep(0.2)
+                continue
             try:
                 with urllib.request.urlopen(request, timeout=3) as response:
                     healthy = response.status == 200
@@ -216,7 +220,7 @@ class WebServer:
                 self._healthy, self._checked_at = healthy, time.monotonic()
                 if healthy:
                     self._urls = local_addresses(self.port)  # адрес мог смениться после переподключения Wi-Fi
-            time.sleep(SELF_CHECK_S)
+            time.sleep(SELF_CHECK_S if healthy else 1)
 
     # --- учёт клиентов ---
 
