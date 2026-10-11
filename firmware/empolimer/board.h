@@ -39,4 +39,4 @@
   #error "Прошивка поддерживает только ESP8266 (NodeMCU, ESP-12) и ESP32"
 #endif
 
-#define FIRMWARE_VERSION "2.0.0"
+#define FIRMWARE_VERSION "2.1.0"

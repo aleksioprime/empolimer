@@ -4,8 +4,14 @@
     "interval": 60
   },
   "wifi": [
-    { "ssid": "School-WiFi", "pass": "password" },
-    { "ssid": "Phone-Hotspot", "pass": "password" }
+    {
+      "ssid": "School-WiFi",
+      "pass": "password"
+    },
+    {
+      "ssid": "Phone-Hotspot",
+      "pass": "password"
+    }
   ],
   "mqtt": {
     "host": "empolimer.technocrew.ru",
@@ -14,11 +20,25 @@
     "pass": "password",
     "prefix": "empolimer"
   },
+  "web": {
+    "enabled": true,
+    "control": true
+  },
+  "ap": {
+    "enabled": true,
+    "pass": "empolimer"
+  },
   "time": {
     "tz": "MSK-3"
   },
   "sensor": {
     "type": 11
+  },
+  "norm": {
+    "temp_min": 18,
+    "temp_max": 28,
+    "hum_min": 40,
+    "hum_max": 70
   },
   "light": {
     "count": 30,

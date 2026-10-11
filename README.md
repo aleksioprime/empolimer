@@ -14,11 +14,11 @@
 
 | Каталог | Назначение |
 | --- | --- |
-| [firmware/](firmware/README.md) | **прошивка ESP** (NodeMCU, ESP-12, ESP32) и пример `config.json` для SD-карты |
+| [firmware/](firmware/README.md) | **прошивка ESP** (NodeMCU, ESP-12, ESP32), страница устройства в браузере и пример `config.json` для SD-карты |
 | [rpi/](rpi/README.md) | **станция на Raspberry Pi** (Zero / 3): камера и показания ESP на дисплее, управление подсветкой |
 | [deploy/](deploy/README.md) | установка станции на Raspberry по сети |
 | [web/](web/README.md) | **сервер и веб-мониторинг**: MQTT → worker → PostgreSQL → API → интерфейс; развёрнут в Coolify |
-| [docs/](docs/) | [подключение оборудования](docs/hardware.md), [протоколы обмена](docs/protocol.md) |
+| [docs/](docs/) | [схемы подключения](docs/hardware.md) для каждой платы, [протоколы обмена](docs/protocol.md) |
 
 ## Быстрый старт
 
@@ -27,7 +27,9 @@
 2. Запишите на SD-карту `config.json` из
    [firmware/sd-card/](firmware/sd-card/config.json): имя устройства, Wi-Fi,
    адрес брокера MQTT.
-3. Включите устройство — через минуту оно появится в веб-интерфейсе.
+3. Включите устройство — через минуту оно появится в веб-интерфейсе. Его
+   собственная страница — `http://empolimer-<id>.local`; без Wi-Fi устройство
+   поднимает сеть `EmPolimer-<id>`, страница — `http://192.168.4.1`.
 4. Для станции с камерой подключите ESP к Raspberry по USB и установите
    программу с компьютера:
 

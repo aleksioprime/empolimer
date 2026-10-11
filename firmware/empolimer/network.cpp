@@ -4,9 +4,11 @@
 #include <time.h>
 
 #if defined(ESP32)
+  #include <ESPmDNS.h>
   #include <WiFi.h>
 #else
   #include <ESP8266WiFi.h>
+  #include <ESP8266mDNS.h>
 #endif
 
 #include "commands.h"
@@ -19,6 +21,8 @@ const uint32_t WIFI_ATTEMPT_MS = 20000;  // сколько ждать одну �
 const uint32_t MQTT_BACKOFF_MIN_MS = 2000;
 const uint32_t MQTT_BACKOFF_MAX_MS = 60000;
 const char* OFFLINE_STATUS = "{\"online\":false}";
+const uint32_t AP_AFTER_MS = 60000;      // без Wi-Fi столько времени — поднять точку доступа
+const uint32_t AP_IDLE_OFF_MS = 60000;   // Wi-Fi есть, к точке никто не подключён — выключить её
 
 WiFiClient tcp;
 PubSubClient mqtt(tcp);
@@ -31,6 +35,11 @@ bool ntpStarted = false;
 
 uint32_t mqttAttemptMs = 0;
 uint32_t mqttBackoffMs = 0;
+
+bool apOn = false;
+bool mdnsStarted = false;
+uint32_t wifiDownSinceMs = 0;
+uint32_t apIdleSinceMs = 0;
 
 String topic(const char* kind) {
   return cfg.mqttPrefix + "/" + cfg.deviceId + "/" + kind;
@@ -60,13 +69,21 @@ void wifiLoop() {
   if (connected != wifiWasConnected) {
     wifiWasConnected = connected;
     if (connected) {
-      logf("Wi-Fi: %s, IP %s", WiFi.SSID().c_str(), WiFi.localIP().toString().c_str());
+      logf("Wi-Fi: %s, IP %s, страница http://%s.local", WiFi.SSID().c_str(),
+           WiFi.localIP().toString().c_str(), hostName().c_str());
       if (!ntpStarted) startNtp();
+      if (!mdnsStarted && MDNS.begin(hostName().c_str())) {
+        MDNS.addService("http", "tcp", 80);
+        mdnsStarted = true;
+      }
     } else {
       logf("Wi-Fi: связь потеряна");
+      wifiDownSinceMs = millis();
     }
   }
   if (connected) return;
+  // Переключение сетей уводит радио с канала точки доступа — не мешаем тем, кто к ней подключён.
+  if (apOn && WiFi.softAPgetStationNum() > 0) return;
 
   if (wifiAttemptMs && millis() - wifiAttemptMs < WIFI_ATTEMPT_MS) return;
   wifiAttemptMs = millis();
@@ -75,6 +92,30 @@ void wifiLoop() {
   logf("Wi-Fi: подключение к %s", net.ssid.c_str());
   WiFi.disconnect();
   WiFi.begin(net.ssid.c_str(), net.pass.c_str());
+}
+
+void apLoop() {
+  if (!cfg.apEnabled) return;
+  bool connected = WiFi.status() == WL_CONNECTED;
+  if (!apOn) {
+    if (!connected && (cfg.wifiCount == 0 || millis() - wifiDownSinceMs >= AP_AFTER_MS)) {
+      WiFi.mode(WIFI_AP_STA);
+      apOn = WiFi.softAP(apName().c_str(), cfg.apPass.length() ? cfg.apPass.c_str() : nullptr);
+      if (apOn) {
+        logf("Точка доступа %s, страница http://%s", apName().c_str(), WiFi.softAPIP().toString().c_str());
+      }
+      apIdleSinceMs = millis();
+    }
+    return;
+  }
+  if (!connected || WiFi.softAPgetStationNum() > 0) {
+    apIdleSinceMs = millis();
+  } else if (millis() - apIdleSinceMs >= AP_IDLE_OFF_MS) {
+    WiFi.softAPdisconnect(true);
+    WiFi.mode(WIFI_STA);
+    apOn = false;
+    logf("Точка доступа выключена: есть Wi-Fi");
+  }
 }
 
 void mqttLoop() {
@@ -111,7 +152,8 @@ void networkBegin(void (*onMqttConnected)()) {
   tzset();
 
   WiFi.persistent(false);  // не изнашивать flash настройками — они живут на SD
-  WiFi.mode(cfg.wifiCount ? WIFI_STA : WIFI_OFF);
+  WiFi.mode(cfg.wifiCount || cfg.apEnabled ? WIFI_STA : WIFI_OFF);
+  wifiDownSinceMs = millis();
   WiFi.setAutoReconnect(true);
 
   mqtt.setServer(cfg.mqttHost.c_str(), cfg.mqttPort);
@@ -124,7 +166,11 @@ void networkBegin(void (*onMqttConnected)()) {
 
 void networkLoop() {
   wifiLoop();
+  apLoop();
   mqttLoop();
+#if defined(ESP8266)
+  if (mdnsStarted) MDNS.update();
+#endif
 }
 
 bool wifiConnected() {
@@ -146,4 +192,19 @@ String wifiAddress() {
 
 int wifiSignal() {
   return wifiConnected() ? WiFi.RSSI() : 0;
+}
+
+bool apActive() {
+  return apOn;
+}
+
+String apName() {
+  return "EmPolimer-" + cfg.deviceId;
+}
+
+String hostName() {
+  String name = "empolimer-" + cfg.deviceId;
+  name.toLowerCase();
+  name.replace("_", "-");
+  return name;
 }

@@ -35,6 +35,14 @@ struct Config {
   int16_t lightOnMinute = -1;      // расписание, минуты от полуночи; -1 — нет
   int16_t lightOffMinute = -1;
 
+  bool webEnabled = true;          // страница устройства на порту 80
+  bool webControl = true;          // управление подсветкой со страницы
+  String apPass = "empolimer";     // пароль своей точки доступа (8+ символов; пусто — открытая)
+  bool apEnabled = true;           // поднимать точку доступа, если Wi-Fi недоступен
+
+  float tempMin = 18, tempMax = 28;  // норма для подсветки значений на странице
+  float humMin = 40, humMax = 70;
+
   bool batteryEnabled = false;
   float batteryDivider = 2.58;     // (R1 + R2) / R2
   float adcRef = 3.3;

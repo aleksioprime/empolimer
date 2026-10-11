@@ -89,6 +89,20 @@ bool configLoad(const char* path, String& error) {
   cfg.lightOnMinute = parseMinutes(doc["light"]["on"] | "");
   cfg.lightOffMinute = parseMinutes(doc["light"]["off"] | "");
 
+  cfg.webEnabled = doc["web"]["enabled"] | cfg.webEnabled;
+  cfg.webControl = doc["web"]["control"] | cfg.webControl;
+  cfg.apEnabled = doc["ap"]["enabled"] | cfg.apEnabled;
+  cfg.apPass = doc["ap"]["pass"] | cfg.apPass.c_str();
+  if (cfg.apPass.length() && cfg.apPass.length() < 8) {
+    error = "ap.pass: не меньше 8 символов (или пусто — открытая сеть)";
+    cfg.apPass = "empolimer";
+  }
+
+  cfg.tempMin = doc["norm"]["temp_min"] | cfg.tempMin;
+  cfg.tempMax = doc["norm"]["temp_max"] | cfg.tempMax;
+  cfg.humMin = doc["norm"]["hum_min"] | cfg.humMin;
+  cfg.humMax = doc["norm"]["hum_max"] | cfg.humMax;
+
   cfg.batteryEnabled = doc["battery"]["enabled"] | cfg.batteryEnabled;
   cfg.batteryDivider = doc["battery"]["divider"] | cfg.batteryDivider;
   cfg.adcRef = doc["battery"]["adc_ref"] | cfg.adcRef;

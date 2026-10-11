@@ -1,0 +1,255 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1010" width="1240" height="1010" font-family="Arial, Helvetica, sans-serif">
+<title>Подключение: ESP32 DevKit V1 (30 пинов)</title>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<rect x="40" y="235" width="300" height="170" rx="8" fill="#efebe9" stroke="#795548" stroke-width="1.5" stroke-dasharray="6 4"/>
+<polyline points="664,490 880,490 880,539 960,539" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="664,490 880,490 880,539 960,539" fill="none" stroke="#f9a825" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="664" cy="490" r="4.5" fill="#f9a825" stroke="#fff" stroke-width="1.5"/>
+<circle cx="960" cy="539" r="4.5" fill="#f9a825" stroke="#fff" stroke-width="1.5"/>
+<polyline points="664,602 900,602 900,564 960,564" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="664,602 900,602 900,564 960,564" fill="none" stroke="#d32f2f" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="664" cy="602" r="4.5" fill="#d32f2f" stroke="#fff" stroke-width="1.5"/>
+<circle cx="960" cy="564" r="4.5" fill="#d32f2f" stroke="#fff" stroke-width="1.5"/>
+<polyline points="664,574 920,574 920,589 960,589" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="664,574 920,574 920,589 960,589" fill="none" stroke="#212121" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="664" cy="574" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<circle cx="960" cy="589" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<polyline points="664,378 800,378 800,398 990,398" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="664,378 800,378 800,398 990,398" fill="none" stroke="#1565c0" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="664" cy="378" r="4.5" fill="#1565c0" stroke="#fff" stroke-width="1.5"/>
+<circle cx="990" cy="398" r="4.5" fill="#1565c0" stroke="#fff" stroke-width="1.5"/>
+<polyline points="664,350 820,350 820,336 990,336" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="664,350 820,350 820,336 990,336" fill="none" stroke="#00838f" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="664" cy="350" r="4.5" fill="#00838f" stroke="#fff" stroke-width="1.5"/>
+<circle cx="990" cy="336" r="4.5" fill="#00838f" stroke="#fff" stroke-width="1.5"/>
+<polyline points="664,210 840,210 840,368 990,368" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="664,210 840,210 840,368 990,368" fill="none" stroke="#6a1b9a" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="664" cy="210" r="4.5" fill="#6a1b9a" stroke="#fff" stroke-width="1.5"/>
+<circle cx="990" cy="368" r="4.5" fill="#6a1b9a" stroke="#fff" stroke-width="1.5"/>
+<polyline points="664,406 860,406 860,430 990,430" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="664,406 860,406 860,430 990,430" fill="none" stroke="#ad1457" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="664" cy="406" r="4.5" fill="#ad1457" stroke="#fff" stroke-width="1.5"/>
+<circle cx="990" cy="430" r="4.5" fill="#ad1457" stroke="#fff" stroke-width="1.5"/>
+<polyline points="990,274 964,274" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="990,274 964,274" fill="none" stroke="#212121" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="990" cy="274" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<circle cx="964" cy="274" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<polyline points="990,306 964,306" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="990,306 964,306" fill="none" stroke="#e65100" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="990" cy="306" r="4.5" fill="#e65100" stroke="#fff" stroke-width="1.5"/>
+<circle cx="964" cy="306" r="4.5" fill="#e65100" stroke="#fff" stroke-width="1.5"/>
+<polyline points="496,602 470,602" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="496,602 470,602" fill="none" stroke="#e65100" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="496" cy="602" r="4.5" fill="#e65100" stroke="#fff" stroke-width="1.5"/>
+<circle cx="470" cy="602" r="4.5" fill="#e65100" stroke="#fff" stroke-width="1.5"/>
+<polyline points="496,574 470,574" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="496,574 470,574" fill="none" stroke="#212121" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="496" cy="574" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<circle cx="470" cy="574" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<polyline points="240,914 280,914 280,848 495,848 495,870" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="240,914 280,914 280,848 495,848 495,870" fill="none" stroke="#e65100" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="240" cy="914" r="4.5" fill="#e65100" stroke="#fff" stroke-width="1.5"/>
+<circle cx="495" cy="870" r="4.5" fill="#e65100" stroke="#fff" stroke-width="1.5"/>
+<polyline points="240,945 260,945 260,985 795,985 795,840 715,840 715,870" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="240,945 260,945 260,985 795,985 795,840 715,840 715,870" fill="none" stroke="#212121" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="240" cy="945" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<circle cx="715" cy="870" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<polyline points="260,985 234,985" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="260,985 234,985" fill="none" stroke="#212121" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="260" cy="985" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<circle cx="234" cy="985" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<polyline points="496,546 245,546 245,830 605,830 605,870" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="496,546 245,546 245,830 605,830 605,870" fill="none" stroke="#2e7d32" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="496" cy="546" r="4.5" fill="#2e7d32" stroke="#fff" stroke-width="1.5"/>
+<circle cx="605" cy="870" r="4.5" fill="#2e7d32" stroke="#fff" stroke-width="1.5"/>
+<polyline points="130,310 270,310 270,294 496,294" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="130,310 270,310 270,294 496,294" fill="none" stroke="#795548" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="130" cy="310" r="4.5" fill="#795548" stroke="#fff" stroke-width="1.5"/>
+<circle cx="496" cy="294" r="4.5" fill="#795548" stroke="#fff" stroke-width="1.5"/>
+<polyline points="270,310 270,375" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="270,310 270,375" fill="none" stroke="#795548" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="270" cy="310" r="4.5" fill="#795548" stroke="#fff" stroke-width="1.5"/>
+<circle cx="270" cy="375" r="4.5" fill="#795548" stroke="#fff" stroke-width="1.5"/>
+<polyline points="130,375 270,375" fill="none" stroke="#fff" stroke-width="6.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="130,375 270,375" fill="none" stroke="#212121" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="130" cy="375" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<circle cx="270" cy="375" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<polyline points="270,375 296,375" fill="none" stroke="#fff" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="270,375 296,375" fill="none" stroke="#212121" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="270" cy="375" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<circle cx="296" cy="375" r="4.5" fill="#212121" stroke="#fff" stroke-width="1.5"/>
+<circle cx="270" cy="310" r="5" fill="#795548"/>
+<circle cx="270" cy="375" r="5" fill="#212121"/>
+<polyline points="580.0,688 580.0,710" fill="none" stroke="#fff" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="580.0,688 580.0,710" fill="none" stroke="#757575" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="580.0" cy="688" r="4.5" fill="#757575" stroke="#fff" stroke-width="1.5"/>
+<circle cx="580.0" cy="710" r="4.5" fill="#757575" stroke="#fff" stroke-width="1.5"/>
+<line x1="40" y1="490" x2="70" y2="490" stroke="#e65100" stroke-width="4"/>
+<line x1="40" y1="510" x2="70" y2="510" stroke="#d32f2f" stroke-width="4"/>
+<line x1="40" y1="530" x2="70" y2="530" stroke="#212121" stroke-width="4"/>
+<line x1="40" y1="550" x2="70" y2="550" stroke="#f9a825" stroke-width="4"/>
+<line x1="40" y1="570" x2="70" y2="570" stroke="#2e7d32" stroke-width="4"/>
+<line x1="40" y1="590" x2="70" y2="590" stroke="#1565c0" stroke-width="4"/>
+<line x1="40" y1="610" x2="70" y2="610" stroke="#6a1b9a" stroke-width="4"/>
+<line x1="40" y1="630" x2="70" y2="630" stroke="#00838f" stroke-width="4"/>
+<line x1="40" y1="650" x2="70" y2="650" stroke="#ad1457" stroke-width="4"/>
+<line x1="40" y1="670" x2="70" y2="670" stroke="#795548" stroke-width="4"/>
+<text x="30" y="40" font-size="22" text-anchor="start" font-weight="bold" fill="#24292f">Подключение: ESP32 DevKit V1 (30 пинов)</text>
+<text x="30" y="62" font-size="13" text-anchor="start" font-weight="normal" fill="#57606a">Вид сверху: антенна вверху, USB внизу. У плат на 38 пинов порядок другой — подключайте по подписям (D4 = GPIO4), а не по месту на плате.</text>
+<rect x="480" y="150" width="200" height="530" rx="8" fill="#263238" stroke="#11171a" stroke-width="2"/>
+<rect x="510" y="158" width="140" height="30" rx="3" fill="#cfd8dc" stroke="#90a4ae" stroke-width="1.5"/>
+<text x="580.0" y="178" font-size="11" text-anchor="middle" font-weight="normal" fill="#455a64">антенна</text>
+<rect x="554.0" y="654" width="52" height="34" rx="3" fill="#b0bec5" stroke="#78909c" stroke-width="1.5"/>
+<text x="580.0" y="676" font-size="12" text-anchor="middle" font-weight="bold" fill="#37474f">USB</text>
+<text x="580.0" y="407.0" font-size="15" text-anchor="middle" font-weight="bold" fill="#eceff1">ESP32</text>
+<text x="580.0" y="427.0" font-size="11" text-anchor="middle" font-weight="normal" fill="#b0bec5">DevKit V1 · 30 pin</text>
+<circle cx="496" cy="210" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="214" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">EN</text>
+<circle cx="496" cy="238" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="242" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">VP</text>
+<circle cx="496" cy="266" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="270" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">VN</text>
+<circle cx="496" cy="294" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="298" font-size="12" text-anchor="start" font-weight="bold" fill="#ffffff">D34</text>
+<circle cx="496" cy="322" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="326" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">D35</text>
+<circle cx="496" cy="350" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="354" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">D32</text>
+<circle cx="496" cy="378" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="382" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">D33</text>
+<circle cx="496" cy="406" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="410" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">D25</text>
+<circle cx="496" cy="434" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="438" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">D26</text>
+<circle cx="496" cy="462" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="466" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">D27</text>
+<circle cx="496" cy="490" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="494" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">D14</text>
+<circle cx="496" cy="518" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="522" font-size="12" text-anchor="start" font-weight="normal" fill="#90a4ae">D12</text>
+<circle cx="496" cy="546" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="550" font-size="12" text-anchor="start" font-weight="bold" fill="#ffffff">D13</text>
+<circle cx="496" cy="574" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="578" font-size="12" text-anchor="start" font-weight="bold" fill="#ffffff">GND</text>
+<circle cx="496" cy="602" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="508" y="606" font-size="12" text-anchor="start" font-weight="bold" fill="#ffffff">VIN</text>
+<circle cx="664" cy="210" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="214" font-size="12" text-anchor="end" font-weight="bold" fill="#ffffff">D23</text>
+<circle cx="664" cy="238" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="242" font-size="12" text-anchor="end" font-weight="normal" fill="#90a4ae">D22</text>
+<circle cx="664" cy="266" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="270" font-size="12" text-anchor="end" font-weight="normal" fill="#90a4ae">TX0</text>
+<circle cx="664" cy="294" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="298" font-size="12" text-anchor="end" font-weight="normal" fill="#90a4ae">RX0</text>
+<circle cx="664" cy="322" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="326" font-size="12" text-anchor="end" font-weight="normal" fill="#90a4ae">D21</text>
+<circle cx="664" cy="350" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="354" font-size="12" text-anchor="end" font-weight="bold" fill="#ffffff">D19</text>
+<circle cx="664" cy="378" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="382" font-size="12" text-anchor="end" font-weight="bold" fill="#ffffff">D18</text>
+<circle cx="664" cy="406" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="410" font-size="12" text-anchor="end" font-weight="bold" fill="#ffffff">D5</text>
+<circle cx="664" cy="434" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="438" font-size="12" text-anchor="end" font-weight="normal" fill="#90a4ae">TX2</text>
+<circle cx="664" cy="462" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="466" font-size="12" text-anchor="end" font-weight="normal" fill="#90a4ae">RX2</text>
+<circle cx="664" cy="490" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="494" font-size="12" text-anchor="end" font-weight="bold" fill="#ffffff">D4</text>
+<circle cx="664" cy="518" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="522" font-size="12" text-anchor="end" font-weight="normal" fill="#90a4ae">D2</text>
+<circle cx="664" cy="546" r="6" fill="#90a4ae" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="550" font-size="12" text-anchor="end" font-weight="normal" fill="#90a4ae">D15</text>
+<circle cx="664" cy="574" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="578" font-size="12" text-anchor="end" font-weight="bold" fill="#ffffff">GND</text>
+<circle cx="664" cy="602" r="6" fill="#ffd54f" stroke="#11171a" stroke-width="1.5"/>
+<text x="652" y="606" font-size="12" text-anchor="end" font-weight="bold" fill="#ffffff">3V3</text>
+<rect x="720" y="84" width="500" height="106" rx="8" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5"/>
+<text x="734" y="106" font-size="13" text-anchor="start" font-weight="bold" fill="#7a5300">Перед включением</text>
+<text x="734" y="128" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">1. Лента — от отдельного блока 5 В; GND блока соединён с GND платы.</text>
+<text x="734" y="146" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">2. Резистор 330 Ом — в разрыв провода D13 → DIN ленты.</text>
+<text x="734" y="164" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">3. Модуль SD со стабилизатором — VCC к VIN (5 В), не к 3V3.</text>
+<text x="734" y="182" font-size="12" text-anchor="start" font-weight="normal" fill="#3d2c00">4. Батарея: на D34 не больше 3,3 В — только через делитель.</text>
+<rect x="960" y="462" width="190" height="140" rx="8" fill="#e3f2fd" stroke="#57606a" stroke-width="1.8"/>
+<text x="1055.0" y="484" font-size="14" text-anchor="middle" font-weight="bold" fill="#24292f">Датчик DHT11 / DHT22</text>
+<text x="1055.0" y="502" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">модуль на плате, 3 вывода;</text>
+<text x="1055.0" y="517" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">подписи: S/DATA, +/VCC, −/GND</text>
+<text x="970" y="542.6666666666666" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">S (DATA)</text>
+<rect x="955" y="533.6666666666666" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<text x="970" y="568.0" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">+ (VCC)</text>
+<rect x="955" y="559.0" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<text x="970" y="593.3333333333334" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">− (GND)</text>
+<rect x="955" y="584.3333333333334" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<rect x="990" y="195" width="210" height="250" rx="8" fill="#ede7f6" stroke="#57606a" stroke-width="1.8"/>
+<text x="1095.0" y="217" font-size="14" text-anchor="middle" font-weight="bold" fill="#24292f">Модуль microSD</text>
+<text x="1095.0" y="235" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">со стабилизатором 3,3 В на плате</text>
+<text x="1095.0" y="250" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">→ питание 5 В</text>
+<text x="1000" y="278.5" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">GND</text>
+<rect x="985" y="269.5" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<text x="1000" y="309.5" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">VCC</text>
+<rect x="985" y="300.5" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<text x="1000" y="340.5" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">MISO</text>
+<rect x="985" y="331.5" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<text x="1000" y="371.5" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">MOSI</text>
+<rect x="985" y="362.5" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<text x="1000" y="402.5" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">SCK</text>
+<rect x="985" y="393.5" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<text x="1000" y="433.5" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">CS</text>
+<rect x="985" y="424.5" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<rect x="883.4" y="263" width="80.6" height="22" rx="11" fill="#ffffff" stroke="#212121" stroke-width="2"/>
+<text x="923.6999999999999" y="278" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#212121">→ GND платы</text>
+<rect x="883.4" y="295" width="80.6" height="22" rx="11" fill="#ffffff" stroke="#e65100" stroke-width="2"/>
+<text x="923.6999999999999" y="310" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#e65100">→ VIN (5 В)</text>
+<rect x="363.0" y="591" width="107.0" height="22" rx="11" fill="#ffffff" stroke="#e65100" stroke-width="2"/>
+<text x="416.5" y="606" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#e65100">→ VCC модуля SD</text>
+<rect x="257.4" y="563" width="212.6" height="22" rx="11" fill="#ffffff" stroke="#212121" stroke-width="2"/>
+<text x="363.7" y="578" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#212121">→ GND модуля SD и блока питания</text>
+<rect x="40" y="850" width="200" height="110" rx="8" fill="#fff3e0" stroke="#57606a" stroke-width="1.8"/>
+<text x="140.0" y="872" font-size="14" text-anchor="middle" font-weight="bold" fill="#24292f">Блок питания 5 В</text>
+<text x="140.0" y="890" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">≥ 2 А на 30 светодиодов</text>
+<text x="230" y="918.25" font-size="12" text-anchor="end" font-weight="bold" fill="#24292f">+5V</text>
+<rect x="235" y="909.25" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<text x="230" y="948.75" font-size="12" text-anchor="end" font-weight="bold" fill="#24292f">GND</text>
+<rect x="235" y="939.75" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<rect x="440" y="870" width="330" height="90" rx="8" fill="#e8f5e9" stroke="#57606a" stroke-width="1.8"/>
+<text x="605.0" y="914" font-size="14" text-anchor="middle" font-weight="bold" fill="#24292f">Лента WS2812B</text>
+<text x="605.0" y="932" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">к началу ленты: вход DIN, стрелки — от вас</text>
+<text x="495.0" y="886" font-size="12" text-anchor="middle" font-weight="bold" fill="#24292f">+5V</text>
+<rect x="490.0" y="865" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<text x="605.0" y="886" font-size="12" text-anchor="middle" font-weight="bold" fill="#24292f">DIN</text>
+<rect x="600.0" y="865" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<text x="715.0" y="886" font-size="12" text-anchor="middle" font-weight="bold" fill="#24292f">GND</text>
+<rect x="710.0" y="865" width="10" height="10" fill="#ffd54f" stroke="#57606a"/>
+<rect x="153.4" y="974" width="80.6" height="22" rx="11" fill="#ffffff" stroke="#212121" stroke-width="2"/>
+<text x="193.7" y="989" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#212121">к GND платы</text>
+<rect x="238.0" y="763.0" width="14" height="34" rx="3" fill="#fff3e0" stroke="#8d6e63" stroke-width="1.5"/>
+<text x="257" y="784" font-size="12" text-anchor="start" font-weight="normal" fill="#5d4037">330 Ом</text>
+<text x="54" y="257" font-size="13" text-anchor="start" font-weight="bold" fill="#24292f">Батарея — необязательно</text>
+<text x="54" y="275" font-size="11" text-anchor="start" font-weight="normal" fill="#57606a">battery.enabled = true</text>
+<text x="54" y="314" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">Батарея +</text>
+<text x="54" y="379" font-size="12" text-anchor="start" font-weight="bold" fill="#24292f">Батарея −</text>
+<rect x="183.0" y="303.0" width="34" height="14" rx="3" fill="#fff3e0" stroke="#8d6e63" stroke-width="1.5"/>
+<text x="200" y="298" font-size="12" text-anchor="middle" font-weight="normal" fill="#5d4037">R1 15 кОм</text>
+<rect x="263.0" y="325.5" width="14" height="34" rx="3" fill="#fff3e0" stroke="#8d6e63" stroke-width="1.5"/>
+<text x="282" y="346.5" font-size="12" text-anchor="start" font-weight="normal" fill="#5d4037">R2 10 кОм</text>
+<rect x="296" y="364" width="41.0" height="22" rx="11" fill="#ffffff" stroke="#212121" stroke-width="2"/>
+<text x="316.5" y="379" font-size="11.5" text-anchor="middle" font-weight="bold" fill="#212121">→ GND</text>
+<text x="40" y="425" font-size="12" text-anchor="start" font-weight="normal" fill="#5d4037">в config.json: divider = (R1 + R2) / R2 = 2,5</text>
+<rect x="460.0" y="710" width="240" height="54" rx="8" fill="#fce4ec" stroke="#ad1457" stroke-width="1.5"/>
+<text x="580.0" y="734" font-size="13" text-anchor="middle" font-weight="bold" fill="#24292f">Raspberry Pi — порт USB</text>
+<text x="580.0" y="752" font-size="11" text-anchor="middle" font-weight="normal" fill="#57606a">кабель USB с передачей данных</text>
+<text x="40" y="470" font-size="13" text-anchor="start" font-weight="bold" fill="#24292f">Цвета проводов</text>
+<text x="78" y="494" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">+5 В</text>
+<text x="78" y="514" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">+3,3 В</text>
+<text x="78" y="534" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">GND (минус)</text>
+<text x="78" y="554" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">данные датчика</text>
+<text x="78" y="574" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">данные ленты</text>
+<text x="78" y="594" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">SD SCK</text>
+<text x="78" y="614" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">SD MOSI</text>
+<text x="78" y="634" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">SD MISO</text>
+<text x="78" y="654" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">SD CS</text>
+<text x="78" y="674" font-size="12" text-anchor="start" font-weight="normal" fill="#24292f">батарея</text>
+<text x="40" y="700" font-size="12" text-anchor="start" font-weight="normal" fill="#57606a">Метка «→ VIN (5 В)»: провод</text>
+<text x="40" y="716" font-size="12" text-anchor="start" font-weight="normal" fill="#57606a">к выводу с той же подписью.</text>
+<text x="40" y="732" font-size="12" text-anchor="start" font-weight="normal" fill="#57606a">Все GND платы соединены —</text>
+<text x="40" y="748" font-size="12" text-anchor="start" font-weight="normal" fill="#57606a">подходит любой.</text>
+</svg>

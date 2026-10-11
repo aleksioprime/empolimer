@@ -2,7 +2,8 @@
 //
 // Платы: NodeMCU / ESP-12 (ESP8266) и ESP32. Модули: датчик DHT11/DHT22,
 // адресная лента подсветки, SD-карта (настройки, журнал, очередь), Wi-Fi + MQTT,
-// USB-порт для Raspberry. Любой модуль можно не подключать — остальные работают.
+// страница устройства в браузере, USB-порт для Raspberry. Любой модуль можно
+// не подключать — остальные работают.
 //
 // Пины — board.h, настройки — /config.json на SD (пример в firmware/sd-card/),
 // форматы сообщений — docs/protocol.md.
@@ -19,6 +20,7 @@
 #include "network.h"
 #include "state.h"
 #include "storage.h"
+#include "web.h"
 
 State state;
 
@@ -74,6 +76,8 @@ static String statusJson(bool withType) {
     doc["ip"] = wifiAddress();
     doc["rssi"] = wifiSignal();
   }
+  doc["host"] = hostName();
+  doc["ap"] = apActive();
   doc["time"] = timeValid();
   doc["sd"] = state.sdReady;
   if (state.configError.length()) doc["config_error"] = state.configError;
@@ -105,6 +109,7 @@ static void measure() {
   state.humidity = humidity;
   state.battery = readBattery();
   state.lastMeasureMs = millis();
+  webRecord(temperature, humidity);
 
   time_t ts = timeValid() ? time(nullptr) : 0;
   linkSend(dataJson(ts, true));
@@ -168,12 +173,14 @@ void setup() {
   dht->begin();
   lightBegin();
   networkBegin(onMqttConnected);
+  webBegin(statusJson);
   sendStatus();
 }
 
 void loop() {
   linkPoll();
   networkLoop();
+  webLoop();
   lightTick();
 
   // DHT нельзя опрашивать чаще раза в 2 секунды.
